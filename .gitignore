@@ -1,0 +1,22 @@
+# Python & Environment
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+
+# Downloads
+Bayan_ul_Quran_Downloads/
+*.mp4
+*.mp3
+*.m4a
+*.webm
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

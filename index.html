@@ -1,0 +1,2186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayan-ul-Quran (Dr. Israr Ahmad) - 108 Episodes Video Player</title>
+    <meta name="description" content="Complete 108-episode Bayan-ul-Quran video player by Dr. Israr Ahmad with instant search, Surah index, recommendations, and episode progress tracking.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #060a08;
+            --bg-card: #0d1612;
+            --bg-elevated: #14221c;
+            --bg-hover: #1c2e26;
+            --accent-emerald: #10b981;
+            --accent-emerald-glow: rgba(16, 185, 129, 0.25);
+            --accent-gold: #f59e0b;
+            --accent-gold-light: #fbbf24;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --text-dim: #6b7280;
+            --border-color: rgba(16, 185, 129, 0.2);
+            --border-gold: rgba(245, 158, 11, 0.3);
+            --radius-lg: 16px;
+            --radius-md: 10px;
+            --radius-sm: 6px;
+            --shadow-subtle: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(245, 158, 11, 0.05) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* Header Navigation */
+        header {
+            background: rgba(13, 22, 18, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            border: 2px solid var(--accent-gold);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--accent-gold-light);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+        }
+
+        .brand-text h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff 0%, var(--accent-gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .brand-text p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .header-badges {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--accent-emerald);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .badge-gold {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: var(--border-gold);
+            color: var(--accent-gold-light);
+        }
+
+        /* Search & Filter Toolbar */
+        .toolbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+        }
+
+        .toolbar-inner {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            background: rgba(6, 10, 8, 0.6);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-main);
+            font-size: 0.92rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 0 3px var(--accent-emerald-glow);
+            background: rgba(6, 10, 8, 0.9);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+
+        .surah-dropdown-wrapper {
+            min-width: 240px;
+        }
+
+        .surah-dropdown {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--accent-gold-light);
+            font-size: 0.9rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .surah-dropdown:focus, .surah-dropdown:hover {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .surah-dropdown option {
+            background: var(--bg-card);
+            color: var(--text-main);
+            padding: 0.5rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            text-decoration: none;
+            background: var(--bg-elevated);
+            color: var(--text-main);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-emerald {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-emerald:hover {
+            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: var(--border-color);
+            color: var(--text-main);
+        }
+
+        .btn-outline:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-emerald);
+        }
+
+        .btn-gold {
+            background: rgba(245, 158, 11, 0.15);
+            border-color: var(--border-gold);
+            color: var(--accent-gold-light);
+        }
+
+        .btn-gold:hover {
+            background: rgba(245, 158, 11, 0.25);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+        }
+
+        /* Main Workspace Layout */
+        .main-layout {
+            max-width: 1600px;
+            margin: 1.5rem auto;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 1.75rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        @media (max-width: 1100px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Left Side: Video Player & Details */
+        .player-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .video-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background: #000;
+        }
+
+        .iframe-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .player-nav-bar {
+            background: var(--bg-elevated);
+            padding: 0.9rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .ep-details-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ep-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .ep-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.35;
+        }
+
+        .ep-meta-row {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .ep-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-emerald);
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .ep-tag-gold {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-gold-light);
+        }
+
+        /* Up Next & Recommendation Section */
+        .recommendations-section {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-gold-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Up Next Hero Recommendation Card */
+        .up-next-card {
+            background: linear-gradient(135deg, rgba(20, 34, 28, 0.9) 0%, rgba(13, 22, 18, 0.9) 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            padding: 1.25rem;
+            display: flex;
+            gap: 1.25rem;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .up-next-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(245, 158, 11, 0.15);
+        }
+
+        .up-next-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-gold), var(--accent-emerald));
+        }
+
+        .up-next-badge {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: var(--accent-gold);
+            color: #000;
+            font-weight: 800;
+            font-size: 0.68rem;
+            padding: 0.15rem 0.55rem;
+            border-radius: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .up-next-thumb {
+            width: 140px;
+            height: 80px;
+            background: #000;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .play-overlay-icon {
+            position: absolute;
+            font-size: 2rem;
+            color: var(--accent-gold-light);
+            filter: drop-shadow(0 2px 8px rgba(0,0,0,0.8));
+        }
+
+        .up-next-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .up-next-subtitle {
+            font-size: 0.78rem;
+            color: var(--accent-emerald);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .up-next-title {
+            font-size: 0.98rem;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.3;
+        }
+
+        /* Related Grid */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+
+        .related-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 0.9rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .related-card:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-emerald);
+            transform: translateY(-2px);
+        }
+
+        .related-card-ep {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-emerald);
+        }
+
+        .related-card-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        /* Right Side: Playlist Sidebar */
+        .sidebar {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 180px);
+            position: sticky;
+            top: 90px;
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+        }
+
+        @media (max-width: 1100px) {
+            .sidebar {
+                height: 600px;
+                position: static;
+            }
+        }
+
+        .sidebar-header {
+            padding: 1.1rem 1.25rem;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ep-count {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+        }
+
+        .playlist-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        .playlist-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .playlist-scroll::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .playlist-scroll::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .playlist-scroll::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-emerald);
+        }
+
+        .playlist-item {
+            padding: 0.85rem 1rem;
+            border-radius: var(--radius-md);
+            display: flex;
+            gap: 0.9rem;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 0.35rem;
+            border: 1px solid transparent;
+        }
+
+        .playlist-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .playlist-item.active {
+            background: var(--bg-elevated);
+            border-color: var(--accent-emerald);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+        }
+
+        .ep-number-circle {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+        }
+
+        .playlist-item.active .ep-number-circle {
+            background: var(--accent-emerald);
+            color: #000;
+            border-color: var(--accent-emerald);
+        }
+
+        .item-info {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .item-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .playlist-item.active .item-title {
+            color: var(--accent-gold-light);
+        }
+
+        .item-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .watched-indicator {
+            color: var(--accent-emerald);
+            font-size: 0.9rem;
+        }
+
+        /* CLI Download Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: var(--radius-lg);
+            max-width: 600px;
+            width: 100%;
+            padding: 1.75rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .code-block {
+            background: #000;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85rem;
+            color: var(--accent-emerald);
+            overflow-x: auto;
+            margin: 0.75rem 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 1.5rem 2rem;
+            text-align: center;
+            margin-top: auto;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        footer a {
+            color: var(--accent-gold-light);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-content">
+            <div class="brand-area">
+                <div class="brand-icon">☪</div>
+                <div class="brand-text">
+                    <h1>Bayan-ul-Quran</h1>
+                    <p>Dr. Israr Ahmad • Complete 108 Episodes Video Tafseer</p>
+                </div>
+            </div>
+            <div class="header-badges">
+                <span class="badge">▶ 108 HD Video Episodes</span>
+                <span class="badge badge-gold">📖 114 Surahs Mapped</span>
+                <span class="badge">⚡ GitHub Pages Ready</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Search & Filter Toolbar -->
+    <section class="toolbar">
+        <div class="toolbar-inner">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Search episode title, Surah name (e.g. Baqarah, Kahf, Fatiha)..." oninput="handleSearch()">
+            </div>
+            
+            <div class="surah-dropdown-wrapper">
+                <select id="surahSelect" class="surah-dropdown" onchange="handleSurahSelect(this.value)">
+                    <option value="">-- Jump to Surah / Juz --</option>
+                </select>
+            </div>
+
+            <div class="quick-actions">
+                <button class="btn btn-gold" onclick="resumeLastPlayed()">↺ Resume Last</button>
+                <button class="btn btn-outline" onclick="playRandom()">🔀 Random</button>
+                <button class="btn btn-emerald" onclick="openDownloadModal()">📥 Downloader CLI</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Workspace Layout -->
+    <main class="main-layout">
+        <!-- Left Column: Video Player & Details -->
+        <div class="player-section">
+            <div class="video-container">
+                <div class="iframe-wrapper">
+                    <iframe id="videoIframe" src="" allowfullscreen allow="autoplay"></iframe>
+                </div>
+                <div class="player-nav-bar">
+                    <div class="nav-buttons">
+                        <button id="prevBtn" class="btn btn-outline" onclick="playPrevious()">◄ Previous</button>
+                        <button id="nextBtn" class="btn btn-emerald" onclick="playNext()">Next Episode ►</button>
+                    </div>
+                    <div>
+                        <button id="watchBtn" class="btn btn-gold" onclick="toggleWatchedCurrent()">✓ Mark Completed</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Episode Details Card -->
+            <div class="ep-details-card">
+                <div class="ep-header">
+                    <div>
+                        <div class="ep-meta-row">
+                            <span id="epBadge" class="ep-tag">Episode 1 of 108</span>
+                            <span id="surahBadge" class="ep-tag ep-tag-gold">Introduction</span>
+                        </div>
+                        <h2 id="epTitle" class="ep-title" style="margin-top: 0.5rem;">Loading episode...</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Up Next & Recommendations Engine -->
+            <div class="recommendations-section">
+                <div class="section-header">
+                    <h3 class="section-title">✨ Up Next & Surah Recommendations</h3>
+                </div>
+
+                <!-- Up Next Hero Card -->
+                <div id="upNextContainer" class="up-next-card" onclick="playNext()">
+                    <span class="up-next-badge">NEXT VIDEO</span>
+                    <div class="up-next-thumb">
+                        <span class="play-overlay-icon">▶</span>
+                    </div>
+                    <div class="up-next-info">
+                        <span class="up-next-subtitle" id="upNextSub">Next Episode in Sequence</span>
+                        <h4 class="up-next-title" id="upNextTitle">Loading next video...</h4>
+                    </div>
+                    <button class="btn btn-emerald" style="align-self: center;">Play Now ►</button>
+                </div>
+
+                <!-- Related Surah Grid -->
+                <div class="section-header" style="margin-top: 0.5rem;">
+                    <h4 style="font-size: 0.92rem; color: var(--text-muted);">Related Surah Parts</h4>
+                </div>
+                <div id="relatedGrid" class="related-grid">
+                    <!-- Dynamic related cards inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Playlist Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">
+                    <span>📋 Series Playlist</span>
+                </div>
+                <span id="playlistCounter" class="ep-count">108 Episodes</span>
+            </div>
+            <div id="playlistContainer" class="playlist-scroll">
+                <!-- Playlist Items inserted dynamically -->
+            </div>
+        </aside>
+    </main>
+
+    <!-- Downloader CLI Modal -->
+    <div id="downloadModal" class="modal-overlay" onclick="closeDownloadModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeDownloadModal()">&times;</button>
+            <h3 style="color: var(--accent-gold-light); margin-bottom: 0.5rem;">📥 Python Downloader CLI Guide</h3>
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+                You can download high-definition video/audio of any Surah or episode directly using the included <code>download_bayan.py</code> script!
+            </p>
+
+            <h4 style="font-size: 0.85rem; color: var(--text-main);">Download by Surah Name:</h4>
+            <div class="code-block">python download_bayan.py --surah Baqarah</div>
+
+            <h4 style="font-size: 0.85rem; color: var(--text-main);">Download Episode Range (e.g. 1 to 10):</h4>
+            <div class="code-block">python download_bayan.py --start 1 --end 10</div>
+
+            <h4 style="font-size: 0.85rem; color: var(--text-main);">Download MP3 Audio Only:</h4>
+            <div class="code-block">python download_bayan.py --surah Kahf --audio-only</div>
+
+            <h4 style="font-size: 0.85rem; color: var(--text-main);">List All Surah Mappings:</h4>
+            <div class="code-block">python download_bayan.py --list-surahs</div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Bayan-ul-Quran (Dr. Israr Ahmad) Web Player & Downloader • Open Source Project</p>
+    </footer>
+
+    <script>
+        // Full Episode Dataset
+        const EPISODES = [
+  {
+    "episode": 1,
+    "title": "Bayan-ul-Quran (Introduction) By Dr. Israr Ahmad | 1/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-introduction-by-dr-israr-ahmad-1-108_GLcyslS9JOSAtuT.html",
+    "embed_url": "https://ok.ru/videoembed/3598482016904"
+  },
+  {
+    "episode": 2,
+    "title": "Bayan-ul-Quran (Introduction) Part-II By Dr. Israr Ahmad | 2/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-introduction-part-ii-by-dr-israr-ahmad-2-108_IT1xzETNxC3HI3z.html",
+    "embed_url": "https://ok.ru/videoembed/3598482082440"
+  },
+  {
+    "episode": 3,
+    "title": "Bayan-ul-Quran (Introduction) Part-III By Dr. Israr Ahmad | 3/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-introduction-part-iii-by-dr-israr-ahmad-3-108_RTXiTsJkHwVmnkF.html",
+    "embed_url": "https://ok.ru/videoembed/3598509542024"
+  },
+  {
+    "episode": 4,
+    "title": "Bayan-ul-Quran (Introduction) Part-IV By Dr. Israr Ahmad | 4/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-introduction-part-iv-by-dr-israr-ahmad-4-108_IqgVR8sBzcAuWtQ.html",
+    "embed_url": "https://ok.ru/videoembed/3598515112584"
+  },
+  {
+    "episode": 5,
+    "title": "Bayan-ul-Quran (Surah Al-Fatiha) By Dr. Israr Ahmad | 5/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-fatiha-by-dr-israr-ahmad-5-108_k2ZSqqCGGpyDVer.html",
+    "embed_url": "https://ok.ru/videoembed/3598518520456"
+  },
+  {
+    "episode": 6,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 01 To 29) By Dr. Israr Ahmad | 6/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-01-to-29-by-dr-israr-ahmad-6-108_hLObvw5qF6vh2VD.html",
+    "embed_url": "https://ok.ru/videoembed/3598544734856"
+  },
+  {
+    "episode": 7,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 30 To 46) By Dr. Israr Ahmad | 7/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-30-to-46-by-dr-israr-ahmad-7-108_ID7z5rMkuoYM3uj.html",
+    "embed_url": "https://ok.ru/videoembed/3599382743688"
+  },
+  {
+    "episode": 8,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 47 To 74) By Dr. Israr Ahmad | 8/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-47-to-74-by-dr-israr-ahmad-8-108_EFQFlPh4SrDWRON.html",
+    "embed_url": "https://ok.ru/videoembed/3599382809224"
+  },
+  {
+    "episode": 9,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 75 To 107) By Dr. Israr Ahmad | 9/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-75-to-107-by-dr-israr-ahmad-9-108_VuieqOg598jjkpR.html",
+    "embed_url": "https://ok.ru/videoembed/3599411645064"
+  },
+  {
+    "episode": 10,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 108 To 141) By Dr. Israr Ahmad | 10/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-108-to-141-by-dr-israr-ahmad-10-108_sfqspkezwPzoLgS.html",
+    "embed_url": "https://ok.ru/videoembed/3599420033672"
+  },
+  {
+    "episode": 11,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 142 To 176) By Dr. Israr Ahmad | 11/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-142-to-176-by-dr-israr-ahmad-11-108_vcUvY6hb7sQmPZ6.html",
+    "embed_url": "https://ok.ru/videoembed/3599427570312"
+  },
+  {
+    "episode": 12,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 177 To 196) By Dr. Israr Ahmad | 12/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-177-to-196-by-dr-israr-ahmad-12-108_6sM8yohPsZ9ZnTg.html",
+    "embed_url": "https://ok.ru/videoembed/3599441529480"
+  },
+  {
+    "episode": 13,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 197 To 228) By Dr. Israr Ahmad | 13/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-197-to-228-by-dr-israr-ahmad-13-108_oW6k3Gh22yUhOIM.html",
+    "embed_url": "https://ok.ru/videoembed/3599459682952"
+  },
+  {
+    "episode": 14,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 229 To 253) By Dr. Israr Ahmad | 14/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-229-to-253-by-dr-israr-ahmad-14-108_8vww54tYQqVI7vm.html",
+    "embed_url": "https://ok.ru/videoembed/3599470561928"
+  },
+  {
+    "episode": 15,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 254 To 273) By Dr. Israr Ahmad | 15/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-254-to-273-by-dr-israr-ahmad-15-108_EIsdT2kNOBlQkEu.html",
+    "embed_url": "https://ok.ru/videoembed/3599477312136"
+  },
+  {
+    "episode": 16,
+    "title": "Bayan-ul-Quran (Surah Al-Baqarah 274 To End) By Dr. Israr Ahmad | 16/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-baqarah-274-to-end-by-dr-israr-ahmad-16-108_YSlqr9olaEB7C9y.html",
+    "embed_url": "https://ok.ru/videoembed/3599616903816"
+  },
+  {
+    "episode": 17,
+    "title": "Bayan-ul-Quran (Surah Aal-e-Imran 01 To 48) By Dr. Israr Ahmad | 17/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-aal-e-imran-01-to-48-by-dr-israr-ahmad-17-108_NlUfFHvtU1k17L3.html",
+    "embed_url": "https://ok.ru/videoembed/3599689255560"
+  },
+  {
+    "episode": 18,
+    "title": "Bayan-ul-Quran (Surah Aal-e-Imran 48 To 101) By Dr. Israr Ahmad | 18/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-aal-e-imran-48-to-101-by-dr-israr-ahmad-18-108_B1pdzzgb7TQ6mVT.html",
+    "embed_url": "https://ok.ru/videoembed/3599689386632"
+  },
+  {
+    "episode": 19,
+    "title": "Bayan-ul-Quran (Surah Aal-e-Imran 102 To 151) By Dr. Israr Ahmad | 19/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-aal-e-imran-102-to-151-by-dr-israr-ahmad-19-108_m66cqfF6jsp6cQw.html",
+    "embed_url": "https://ok.ru/videoembed/3599689321096"
+  },
+  {
+    "episode": 20,
+    "title": "Bayan-ul-Quran (Surah Aal-e-Imran 152 To End) By Dr. Israr Ahmad | 20/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-aal-e-imran-152-to-end-by-dr-israr-ahmad-20-108_5vK6IwYMEAPdOd6.html",
+    "embed_url": "https://ok.ru/videoembed/3606209235592"
+  },
+  {
+    "episode": 21,
+    "title": "Bayan-ul-Quran (Surah An-Nisa 01 To 30) By Dr. Israr Ahmad | 21/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-nisa-01-to-30-by-dr-israr-ahmad-21-108_vvsPoyxD4BuNxmQ.html",
+    "embed_url": "https://ok.ru/videoembed/3606209366664"
+  },
+  {
+    "episode": 22,
+    "title": "Bayan-ul-Quran (Surah An-Nisa 31 To 65) By Dr. Israr Ahmad | 22/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-nisa-31-to-65-by-dr-israr-ahmad-22-108_uYVELDAHMKDebYE.html",
+    "embed_url": "https://ok.ru/videoembed/3606209628808"
+  },
+  {
+    "episode": 23,
+    "title": "Bayan-ul-Quran (Surah An-Nisa 66 To 100) By Dr. Israr Ahmad | 23/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-nisa-66-to-100-by-dr-israr-ahmad-23-108_SCrnTI2IxsbMpAy.html",
+    "embed_url": "https://ok.ru/videoembed/3606209432200"
+  },
+  {
+    "episode": 24,
+    "title": "Bayan-ul-Quran (Surah An-Nisa 101 To 142) By Dr. Israr Ahmad | 24/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-nisa-101-to-142-by-dr-israr-ahmad-24-108_FWaYPoNJ5lvCuJj.html",
+    "embed_url": "https://ok.ru/videoembed/3606209497736"
+  },
+  {
+    "episode": 25,
+    "title": "Bayan-ul-Quran (Surah An-Nisa 143 to Surah Al-Maidah 04) By Dr. Israr Ahmad | 25/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-nisa-143-to-surah-al-maidah-04-by-dr-israr-ahmad-25-108_INxfORUioJ5TiR7.html",
+    "embed_url": "https://ok.ru/videoembed/3606209563272"
+  },
+  {
+    "episode": 26,
+    "title": "Bayan-ul-Quran (Surah Al-Maidah 05 To 43) By Dr. Israr Ahmad | 26/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-maidah-05-to-43-by-dr-israr-ahmad-26-108_YsDPi8Lelf3VLif.html",
+    "embed_url": "https://ok.ru/videoembed/3606269856392"
+  },
+  {
+    "episode": 27,
+    "title": "Bayan-ul-Quran (Surah Al-Maidah 43 To 86) By Dr. Israr Ahmad | 27/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-maidah-43-to-86-by-dr-israr-ahmad-27-108_azue5T7j6dShEHH.html",
+    "embed_url": "https://ok.ru/videoembed/3606364162696"
+  },
+  {
+    "episode": 28,
+    "title": "Bayan-ul-Quran (Surah Al-Maidah 87 To End) By Dr. Israr Ahmad | 28/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-maidah-87-to-end-by-dr-israr-ahmad-28-108_6FFy222Cgff72H3.html",
+    "embed_url": "https://ok.ru/videoembed/3606364228232"
+  },
+  {
+    "episode": 29,
+    "title": "Bayan-ul-Quran (Surah Al-Anaam 01 To 49) By Dr. Israr Ahmad | 29/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anaam-01-to-49-by-dr-israr-ahmad-29-108_icCfEtzctkwUY83.html",
+    "embed_url": "https://ok.ru/videoembed/3606364293768"
+  },
+  {
+    "episode": 30,
+    "title": "Bayan-ul-Quran (Surah Al-Anaam 50 To 90) By Dr. Israr Ahmad | 30/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anaam-50-to-90-by-dr-israr-ahmad-30-108_zdIzduotb5dmcYc.html",
+    "embed_url": "https://ok.ru/videoembed/3606364359304"
+  },
+  {
+    "episode": 31,
+    "title": "Bayan-ul-Quran (Surah Al-Anaam 91 To 129) By Dr. Israr Ahmad | 31/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anaam-91-to-129-by-dr-israr-ahmad-31-108_g6yLAN6N2igUA3N.html",
+    "embed_url": "https://ok.ru/videoembed/3608076356232"
+  },
+  {
+    "episode": 32,
+    "title": "Bayan-ul-Quran (Surah Al-Anaam 130 To Surah Al-Araf 19) By Dr. Israr Ahmad | 32/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anaam-130-to-surah-al-araf-19-by-dr-israr-ahmad-32-108_m2proyxi9wPzlKN.html",
+    "embed_url": "https://ok.ru/videoembed/3608076290696"
+  },
+  {
+    "episode": 33,
+    "title": "Bayan-ul-Quran (Surah Al-Araf 20 To 58) By Dr. Israr Ahmad | 33/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-araf-20-to-58-by-dr-israr-ahmad-33-108_RM9z1YokatVFFN6.html",
+    "embed_url": "https://ok.ru/videoembed/3608076421768"
+  },
+  {
+    "episode": 34,
+    "title": "Bayan-ul-Quran (Surah Al-Araf 59 To 129) By Dr. Israr Ahmad | 34/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-araf-59-to-129-by-dr-israr-ahmad-34-108_LDKntasDmrkkeHY.html",
+    "embed_url": "https://ok.ru/videoembed/3608076225160"
+  },
+  {
+    "episode": 35,
+    "title": "Bayan-ul-Quran (Surah Al-Araaf 130 To 166) By Dr. Israr Ahmad | 35/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-araaf-130-to-166-by-dr-israr-ahmad-35-108_Tw1c19oGlhwu4YN.html",
+    "embed_url": "https://ok.ru/videoembed/3608076159624"
+  },
+  {
+    "episode": 36,
+    "title": "Bayan-ul-Quran (Surah Al-Araf 166 To End) By Dr. Israr Ahmad | 36/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-araf-166-to-end-by-dr-israr-ahmad-36-108_dmiWIB9mWmber7U.html",
+    "embed_url": "https://ok.ru/videoembed/3608136845960"
+  },
+  {
+    "episode": 37,
+    "title": "Bayan-ul-Quran (Surah Al-Anfal 01 To 40) By Dr. Israr Ahmad | 37/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anfal-01-to-40-by-dr-israr-ahmad-37-108_fdT2iMH4m2sZNNb.html",
+    "embed_url": "https://ok.ru/videoembed/3608136977032"
+  },
+  {
+    "episode": 38,
+    "title": "Bayan-ul-Quran (Surah Al-Anfal 41 To End) By Dr. Israr Ahmad | 38/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anfal-41-to-end-by-dr-israr-ahmad-38-108_fOoVy5x5NK6PrRk.html",
+    "embed_url": "https://ok.ru/videoembed/3608137108104"
+  },
+  {
+    "episode": 39,
+    "title": "Bayan-ul-Quran (Surah At-Taubah 01 To 34) By Dr. Israr Ahmad | 39/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-at-taubah-01-to-34-by-dr-israr-ahmad-39-108_ShQ4RgtBNfTxoNQ.html",
+    "embed_url": "https://ok.ru/videoembed/3608137042568"
+  },
+  {
+    "episode": 40,
+    "title": "Bayan-ul-Quran (Surah At-Taubah 35 To 85) By Dr. Israr Ahmad | 40/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-at-taubah-35-to-85-by-dr-israr-ahmad-40-108_Jfr6H5AUfwlUDbX.html",
+    "embed_url": "https://ok.ru/videoembed/3608136911496"
+  },
+  {
+    "episode": 41,
+    "title": "Bayan-ul-Quran (Surah At-Taubah 86 To End) By Dr. Israr Ahmad | 41/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-at-taubah-86-to-end-by-dr-israr-ahmad-41-108_wTEekgomR5bXQAv.html",
+    "embed_url": "https://ok.ru/videoembed/3608420944520"
+  },
+  {
+    "episode": 42,
+    "title": "Bayan-ul-Quran (Surah Yunus 01 To 60) By Dr. Israr Ahmad | 42/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-yunus-01-to-60-by-dr-israr-ahmad-42-108_ljsh46e3Kphxrpg.html",
+    "embed_url": "https://ok.ru/videoembed/3608421010056"
+  },
+  {
+    "episode": 43,
+    "title": "Bayan-ul-Quran (Surah Yunus 61 To Surah Hud 24) By Dr. Israr Ahmad | 43/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-yunus-61-to-surah-hud-24-by-dr-israr-ahmad-43-108_FmFeGqZdhryt4IT.html",
+    "embed_url": "https://ok.ru/videoembed/3608421141128"
+  },
+  {
+    "episode": 44,
+    "title": "Bayan-ul-Quran (Surah Hud 25 To 88) By Dr. Israr Ahmad | 44/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-hud-25-to-88-by-dr-israr-ahmad-44-108_tKACDlhoXNASvVX.html",
+    "embed_url": "https://ok.ru/videoembed/3608421075592"
+  },
+  {
+    "episode": 45,
+    "title": "Bayan-ul-Quran (Surah Hud 89 To Surah Yusuf 35) Dr. Israr Ahmad | 45/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-hud-89-to-surah-yusuf-35-dr-israr-ahmad-45-108_r6hiPR9Ijwk1Lo4.html",
+    "embed_url": "https://ok.ru/videoembed/3608421206664"
+  },
+  {
+    "episode": 46,
+    "title": "Bayan-ul-Quran (Surah Yusuf 36 To 106) By Dr. Israr Ahmed | 46/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-yusuf-36-to-106-by-dr-israr-ahmed-46-108_CkOXUHBtdLFfS5n.html",
+    "embed_url": "https://ok.ru/videoembed/3610380601992"
+  },
+  {
+    "episode": 47,
+    "title": "Bayan-ul-Quran (Surah Yusuf 107 To Surah Ibrahim 09) By Dr. Israr Ahmed | 47/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-yusuf-107-to-surah-ibrahim-09-by-dr-israr-ahmed-47-108_zcbkrChGJFABHyC.html",
+    "embed_url": "https://ok.ru/videoembed/3610380470920"
+  },
+  {
+    "episode": 48,
+    "title": "Bayan-ul-Quran (Surah-Ibrahim 10 To Surah Al-Hijr 15) By Dr. Israr Ahmed | 48/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-ibrahim-10-to-surah-al-hijr-15-by-dr-israr-ahmed-48-108_GmQm7lDXVHBLPLb.html",
+    "embed_url": "https://ok.ru/videoembed/3610380405384"
+  },
+  {
+    "episode": 49,
+    "title": "Bayan-ul-Quran (Surah Al-Hijr 16 To End) By Dr. Israr Ahmed | 49/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-hijr-16-to-end-by-dr-israr-ahmed-49-108_IjUPPaOVRku5Bi7.html",
+    "embed_url": "https://ok.ru/videoembed/3610380536456"
+  },
+  {
+    "episode": 50,
+    "title": "Bayan-ul-Quran (Surah Al-Nahl 01 To 66) By Dr. Israr Ahmed | 50/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-nahl-01-to-66-by-dr-israr-ahmed-50-108_jIwOBKy4PfS5kfA.html",
+    "embed_url": "https://ok.ru/videoembed/3599757281928"
+  },
+  {
+    "episode": 51,
+    "title": "Bayan-ul-Quran (Surah Al-Nahl 66 To End) By Dr. Israr Ahmed | 51/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-nahl-66-to-end-by-dr-israr-ahmed-51-108_6OahcNsPeUFE2Y1.html",
+    "embed_url": "https://ok.ru/videoembed/3599771044488"
+  },
+  {
+    "episode": 52,
+    "title": "Bayan-ul-Quran (Surah Bani-Israeel 01 To 35) By Dr. Israr Ahmed | 52/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-bani-israeel-01-to-35-by-dr-israr-ahmed-52-108_Ow8T9wNqp8T6rhH.html",
+    "embed_url": "https://ok.ru/videoembed/3599793785480"
+  },
+  {
+    "episode": 53,
+    "title": "Bayan-ul-Quran (Surah Bani-Israel 36 To 85) By Dr. Israr Ahmed | 53/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-bani-israel-36-to-85-by-dr-israr-ahmed-53-108_E3VKiTBoSPBJi2B.html",
+    "embed_url": "https://ok.ru/videoembed/3599804795528"
+  },
+  {
+    "episode": 54,
+    "title": "Bayan-ul-Quran (Surah Bani-Israeel 86 To Surah Kahf 28) By Dr. Israr Ahmed | 54/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-bani-israeel-86-to-surah-kahf-28-by-dr-israr-ahmed-54-108_So4zwZvC3FaOgOn.html",
+    "embed_url": "https://ok.ru/videoembed/3599824325256"
+  },
+  {
+    "episode": 55,
+    "title": "Bayan-ul-Quran (Surah Al Kahaf Aayet 29-82) By Dr. Israr Ahmed | 55/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-kahaf-aayet-29-82-by-dr-israr-ahmed-55-108_T2aMLDu9iom679J.html",
+    "embed_url": "https://ok.ru/videoembed/3602944101000"
+  },
+  {
+    "episode": 56,
+    "title": "Bayan-ul-Quran (Surah Kahf 83 to Surah Maryam 50) By Dr. Israr Ahmed | 56/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-kahf-83-to-surah-maryam-50-by-dr-israr-ahmed-56-108_g1uM7BX3wIxoh3K.html",
+    "embed_url": "https://ok.ru/videoembed/3602944035464"
+  },
+  {
+    "episode": 57,
+    "title": "Bayan-ul-Quran (Surah Maryam 51 to Surah Taha 46) By Dr. Israr Ahmed | 57/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-maryam-51-to-surah-taha-46-by-dr-israr-ahmed-57-108_hDbyomFSId82pNa.html",
+    "embed_url": "https://ok.ru/videoembed/3602943838856"
+  },
+  {
+    "episode": 58,
+    "title": "Bayan-ul-Quran (Surah Taha 47 to Surah Al-Anbiya 10) By Dr. Israr Ahmed | 58/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-taha-47-to-surah-al-anbiya-10-by-dr-israr-ahmed-58-108_LXQZspoALNTvtXR.html",
+    "embed_url": "https://ok.ru/videoembed/3602943904392"
+  },
+  {
+    "episode": 59,
+    "title": "Bayan-ul-Quran (Surah Al-Anbiya 11 To 103) By Dr. Israr Ahmed | 59/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anbiya-11-to-103-by-dr-israr-ahmed-59-108_xIowX7sZJF5hwJA.html",
+    "embed_url": "https://ok.ru/videoembed/3602943969928"
+  },
+  {
+    "episode": 60,
+    "title": "Bayan-ul-Quran (Surah Al-Anbiya 104 to Surah Al-Hajj 38) By Dr. Israr Ahmed | 60/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-anbiya-104-to-surah-al-hajj-38-by-dr-israr-ahmed-60-108_egl6wSXGLQjsv2H.html",
+    "embed_url": "https://ok.ru/videoembed/3602944166536"
+  },
+  {
+    "episode": 61,
+    "title": "Bayan-ul-Quran (Surah Al-Hajj 39 To End) By Dr. Israr Ahmed | 61/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-hajj-39-to-end-by-dr-israr-ahmed-61-108_MG5uwX8X3qHdOPH.html",
+    "embed_url": "https://ok.ru/videoembed/3604103957128"
+  },
+  {
+    "episode": 62,
+    "title": "Bayan-ul-Quran (Surah Muminun 01 To 114) By Dr. Israr Ahmed | 62/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-muminun-01-to-114-by-dr-israr-ahmed-62-108_MP5LMrbhcTOIaOF.html",
+    "embed_url": "https://ok.ru/videoembed/3604103891592"
+  },
+  {
+    "episode": 63,
+    "title": "Bayan-ul-Quran (Surah Muminun 115 To Al-Noor 40) By Dr. Israr Ahmed | 63/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-muminun-115-to-al-noor-40-by-dr-israr-ahmed-63-108_DVJyJGiqZHR4e3D.html",
+    "embed_url": "https://ok.ru/videoembed/3604213271176"
+  },
+  {
+    "episode": 64,
+    "title": "Bayan-ul-Quran (Surah Al-Noor 41 01 To Surah Al-Furqan 20) By Dr. Israr Ahmed | 64/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-noor-41-01-to-surah-al-furqan-20-by-dr-israr-ahmed-64-108_vh1Pu6L5yDvTYVi.html",
+    "embed_url": "https://ok.ru/videoembed/3604103694984"
+  },
+  {
+    "episode": 65,
+    "title": "Bayan-ul-Quran (Surah Al-Furqan 21 01 To Surah Shu’ara 09) By Dr. Israr Ahmed | 65/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-furqan-21-01-to-surah-shu-ara-09-by-dr-israr-ahmed-65-108_mL7rNzTkrNjhk5W.html",
+    "embed_url": "https://ok.ru/videoembed/3604103629448"
+  },
+  {
+    "episode": 66,
+    "title": "Bayan-ul-Quran (Surah Shu’ara 10 To Surah Naml 09) By Dr. Israr Ahmed | 66/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-shu-ara-10-to-surah-naml-09-by-dr-israr-ahmed-66-108_pxLEWhdM6jcu72g.html",
+    "embed_url": "https://ok.ru/videoembed/3604103826056"
+  },
+  {
+    "episode": 67,
+    "title": "Bayan-ul-Quran (Surah Naml 10 To Surah Al-Qasas 06) By Dr. Israr Ahmed | 67/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-naml-10-to-surah-al-qasas-06-by-dr-israr-ahmed-67-108_9ngBSDnzrDmIHiH.html",
+    "embed_url": "https://ok.ru/videoembed/3604103563912"
+  },
+  {
+    "episode": 68,
+    "title": "Bayan-ul-Quran (Surah Qasas 07 To 75) By Dr. Israr Ahmed | 68/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-qasas-07-to-75-by-dr-israr-ahmed-68-108_Ra2dqe3CwVIVdhK.html",
+    "embed_url": "https://ok.ru/videoembed/3604213402248"
+  },
+  {
+    "episode": 69,
+    "title": "Bayan-ul-Quran (Surah Qasas 76 To Surah Al-Ankabut 13) By Dr. Israr Ahmed | 69/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-qasas-76-to-surah-al-ankabut-13-by-dr-israr-ahmed-69-108_lqa734AjYaZk4cn.html",
+    "embed_url": "https://ok.ru/videoembed/3604213205640"
+  },
+  {
+    "episode": 70,
+    "title": "Bayan-ul-Quran (Surah Al-Ankabut 14 To Surah Ar-Rum 19) By Dr. Israr Ahmed | 70/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-ankabut-14-to-surah-ar-rum-19-by-dr-israr-ahmed-70-108_W15i8NjARSojJ5e.html",
+    "embed_url": "https://ok.ru/videoembed/3604213336712"
+  },
+  {
+    "episode": 71,
+    "title": "Bayan-ul-Quran (Surah Ar-Rum 20 To Surah Luqman 19) By Dr. Israr Ahmed | 71/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-ar-rum-20-to-surah-luqman-19-by-dr-israr-ahmed-71-108_wHNZoDzNTlW1hi2.html",
+    "embed_url": "https://ok.ru/videoembed/3605149780616"
+  },
+  {
+    "episode": 72,
+    "title": "Bayan-ul-Quran (Surah Luqman 20 To Surah Al-Ahzab 08) By Dr. Israr Ahmed | 72/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-luqman-20-to-surah-al-ahzab-08-by-dr-israr-ahmed-72-108_ABH8bBR3vZyWsNw.html",
+    "embed_url": "https://ok.ru/videoembed/3605150239368"
+  },
+  {
+    "episode": 73,
+    "title": "Bayan-ul-Quran (Surah Al-Ahzab 09 To 40) By Dr. Israr Ahmed | 73/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-ahzab-09-to-40-by-dr-israr-ahmed-73-108_wNo2SPIJsyBpqwN.html",
+    "embed_url": "https://ok.ru/videoembed/3605149977224"
+  },
+  {
+    "episode": 74,
+    "title": "Bayan-ul-Quran (Surah Al-Ahzab 41 To Surah Saba 21) By Dr. Israr Ahmed | 74/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-ahzab-41-to-surah-saba-21-by-dr-israr-ahmed-74-108_OhN1ezhHeeSpXL7.html",
+    "embed_url": "https://ok.ru/videoembed/3605149649544"
+  },
+  {
+    "episode": 75,
+    "title": "Bayan-ul-Quran (Surah Saba 22 To Surah Fatir 43) By Dr. Israr Ahmed | 75/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-saba-22-to-surah-fatir-43-by-dr-israr-ahmed-75-108_dehEcJldc3WEgkR.html",
+    "embed_url": "https://ok.ru/videoembed/3605149715080"
+  },
+  {
+    "episode": 76,
+    "title": "Bayan-ul-Quran (Surah Fatir 44 To Surah As-Saffat 53) By Dr. Israr Ahmed | 76/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-fatir-44-to-surah-as-saffat-53-by-dr-israr-ahmed-76-108_KfiYDrggwYl5bgX.html",
+    "embed_url": "https://ok.ru/videoembed/3605150108296"
+  },
+  {
+    "episode": 77,
+    "title": "Bayan-ul-Quran (Surah As-Saffat 44 To Surah Sad 10) By Dr. Israr Ahmed | 77/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-as-saffat-44-to-surah-sad-10-by-dr-israr-ahmed-77-108_t8pB6vYy5ZxuePP.html",
+    "embed_url": "https://ok.ru/videoembed/3605149846152"
+  },
+  {
+    "episode": 78,
+    "title": "Bayan-ul-Quran (Surah Saad 11 To Surah Az-Zumar 04) By Dr. Israr Ahmed | 78/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-saad-11-to-surah-az-zumar-04-by-dr-israr-ahmed-78-108_9RmAhztmKQmQosU.html",
+    "embed_url": "https://ok.ru/videoembed/3605150042760"
+  },
+  {
+    "episode": 79,
+    "title": "Bayan-ul-Quran (Surah Az-Zumar 05 To 67) By Dr. Israr Ahmed | 79/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-az-zumar-05-to-67-by-dr-israr-ahmed-79-108_73VedrbQY93YX1M.html",
+    "embed_url": "https://ok.ru/videoembed/3605150173832"
+  },
+  {
+    "episode": 80,
+    "title": "Bayan-ul-Quran (Surah Az-Zumar 68 To Surah Al-Momin 66) By Dr. Israr Ahmed | 80/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-az-zumar-68-to-surah-al-momin-66-by-dr-israr-ahmed-80-108_9ao44t4uFaQ9lNm.html",
+    "embed_url": "https://ok.ru/videoembed/3605150304904"
+  },
+  {
+    "episode": 81,
+    "title": "Bayan-ul-Quran (Surah Al-Momin 67 To Hameem As-Sajdah 46) By Dr. Israr Ahmed | 81/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-momin-67-to-hameem-as-sajdah-46-by-dr-israr-ahmed-81-108_Hp1TqdNuGtaBHCT.html",
+    "embed_url": "https://ok.ru/videoembed/3605457013384"
+  },
+  {
+    "episode": 82,
+    "title": "Bayan-ul-Quran (Surah Hamim As-Sajdah 47 To Ash-Shura 39) By Dr. Israr Ahmed | 82/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-hamim-as-sajdah-47-to-ash-shura-39-by-dr-israr-ahmed-82-108_7Ufs2KfSaAcaaxz.html",
+    "embed_url": "https://ok.ru/videoembed/3605457078920"
+  },
+  {
+    "episode": 83,
+    "title": "Bayan-ul-Quran (Surah As-Shura 40 To Surah Az-Zukhruf End) By Dr. Israr Ahmed | 83/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-as-shura-40-to-surah-az-zukhruf-end-by-dr-israr-ahmed-83-108_4DpMGUnLMexZWcG.html",
+    "embed_url": "https://ok.ru/videoembed/3605457144456"
+  },
+  {
+    "episode": 84,
+    "title": "Bayan-ul-Quran (Surah Ad-Dukhan 01 To Surah Al-Ahqaf 05) By Dr. Israr Ahmed | 84/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-ad-dukhan-01-to-surah-al-ahqaf-05-by-dr-israr-ahmed-84-108_jico7gXsKyGtbOW.html",
+    "embed_url": "https://ok.ru/videoembed/3605457209992"
+  },
+  {
+    "episode": 85,
+    "title": "Bayan-ul-Quran (Surah Al-Ahqaf 06 To Surah Muhammad 14) By Dr. Israr Ahmed | 85/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-ahqaf-06-to-surah-muhammad-14-by-dr-israr-ahmed-85-108_HTIud6jSd8k1gYx.html",
+    "embed_url": "https://ok.ru/videoembed/3605457275528"
+  },
+  {
+    "episode": 86,
+    "title": "Bayan-ul-Quran (Surah Muhammad 15 To Surah Al-Fatteh 20) By Dr. Israr Ahmed | 86/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-muhammad-15-to-surah-al-fatteh-20-by-dr-israr-ahmed-86-108_BhPPpSSiv7CVucf.html",
+    "embed_url": "https://ok.ru/videoembed/3611362593416"
+  },
+  {
+    "episode": 87,
+    "title": "Bayan-ul-Quran (Surah Al-Fatah 21 To Surah Al-Hujurat End By Dr  Israr Ahmed | 87/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-fatah-21-to-surah-al-hujurat-end-by-dr-israr-ahmed-87-108_V1jDi2Zlqeqz3kE.html",
+    "embed_url": "https://ok.ru/videoembed/3611362855560"
+  },
+  {
+    "episode": 88,
+    "title": "Bayan-ul-Quran (Surah Qaf 01 To Surah Az-Zariyat 50) By Dr. Israr Ahmed | 88/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-qaf-01-to-surah-az-zariyat-50-by-dr-israr-ahmed-88-108_Sg69WSXxQcmUFyZ.html",
+    "embed_url": "https://ok.ru/videoembed/3611362724488"
+  },
+  {
+    "episode": 89,
+    "title": "Bayan-ul-Quran (Surah Az-Zariyat 51 To Surah An-Najm 47) By Dr. Israr Ahmed | 89/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-az-zariyat-51-to-surah-a-najm-47-by-dr-israr-ahmed-89-108_T8wbdPvrT3hCONr.html",
+    "embed_url": "https://ok.ru/videoembed/3611362658952"
+  },
+  {
+    "episode": 90,
+    "title": "Bayan-ul-Quran (Surah An-Najm 47 To Surah Ar-Rehman 32) By Dr. Israr Ahmed | 90/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-najm-47-to-surah-ar-rehman-32-by-dr-israr-ahmed-90-108_UjkRG6l1KdhKUym.html",
+    "embed_url": "https://ok.ru/videoembed/3611362790024"
+  },
+  {
+    "episode": 91,
+    "title": "Bayan-ul-Quran (Surah Ar-Rehman 33 To Surah Al-Waqiah End) By Dr. Israr Ahmed | 91/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-ar-rehman-33-to-surah-al-waqiah-end-by-dr-israr-ahmed-91-108_llKPxuEPfzFZkXy.html",
+    "embed_url": "https://ok.ru/videoembed/3611440974472"
+  },
+  {
+    "episode": 92,
+    "title": "Bayan-ul-Quran (Surah Al-Hadid 01 To 20) By Dr. Israr Ahmed | 92/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-hadid-01-to-20-by-dr-israr-ahmed-92-108_nZU6sULP4AimUdP.html",
+    "embed_url": "https://ok.ru/videoembed/3611441367688"
+  },
+  {
+    "episode": 93,
+    "title": "Bayan-ul-Quran (Surah Al-Hadid 21 To Surah Al-Mujadila 04) By Dr. Israr Ahmed | 93/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-hadid-21-to-surah-al-mujadila-04-by-dr-israr-ahmed-93-108_v5E7tN5csLvhNUO.html",
+    "embed_url": "https://ok.ru/videoembed/3611440843400"
+  },
+  {
+    "episode": 94,
+    "title": "Bayan-ul-Quran (Surah Al-Mujadila 05 To Surah Al-Hashr 10) By Dr. Israr Ahmed | 94/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-mujadila-05-to-surah-al-hashr-10-by-dr-israr-ahmed-94-108_yU3UsFYzPL5OTaP.html",
+    "embed_url": "https://ok.ru/videoembed/3611441302152"
+  },
+  {
+    "episode": 95,
+    "title": "Bayan-ul-Quran (Surah Al-Hashr 11 To Al-Mumtahinah End) By Dr. Israr Ahmed | 95/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-hashr-11-to-al-mumtahinah-end-by-dr-israr-ahmed-95-108_jv7g5Xqb9Pw1EWT.html",
+    "embed_url": "https://ok.ru/videoembed/3611441564296"
+  },
+  {
+    "episode": 96,
+    "title": "Bayan-ul-Quran (Surah As-Saff 01 To Surah Jummah End) By Dr. Israr Ahmed | 96/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-as-saff-01-to-surah-jummah-end-by-dr-israr-ahmed-96-108_J8td3HcgCo4RYrt.html",
+    "embed_url": "https://ok.ru/videoembed/3611441498760"
+  },
+  {
+    "episode": 97,
+    "title": "Bayan-ul-Quran (Surah Al-Munafiqoon 01 To At-Taghabun End) By Dr. Israr Ahmed | 97/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-munafiqoon-01-to-at-taghabun-end-by-dr-israr-ahmed-97-108_uSksWHahrPfTg1Y.html",
+    "embed_url": "https://ok.ru/videoembed/3611441236616"
+  },
+  {
+    "episode": 98,
+    "title": "Bayan-ul-Quran (Surah At-Talaq 01 To Surah Al-Mulk 04) By Dr. Israr Ahmed | 98/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-at-talaq-01-to-surah-al-mulk-04-by-dr-israr-ahmed-98-108_XoDdtWelVbdyZOk.html",
+    "embed_url": "https://ok.ru/videoembed/3611441105544"
+  },
+  {
+    "episode": 99,
+    "title": "Bayan-ul-Quran (Surah Al-Mulk 05 To Surah Al-Maarij 19) By Dr. Israr Ahmed | 99/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-mulk-05-to-surah-al-maarij-19-by-dr-israr-ahmed-99-108_P8UyEZPOXrKozvi.html",
+    "embed_url": "https://ok.ru/videoembed/3611441040008"
+  },
+  {
+    "episode": 100,
+    "title": "Bayan-ul-Quran (Surah Al-Maarij 20 To Surah Al-Muzammil End) By Dr. Israr Ahmed | 100/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-maarij-20-to-surah-al-muzammil-end-by-dr-israr-ahmed-100-108_XU5hIVZM3KaLYNv.html",
+    "embed_url": "https://ok.ru/videoembed/3611441433224"
+  },
+  {
+    "episode": 101,
+    "title": "Bayan-ul-Quran (Surah Al-Mudassir 01 To Surah Ad-Dahr End) By Dr. Israr Ahmed | 101/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-mudassir-01-to-surah-ad-dahr-end-by-dr-israr-ahmed-101-108_EUMxIQ2reJWt1Bf.html",
+    "embed_url": "https://ok.ru/videoembed/3611702594184"
+  },
+  {
+    "episode": 102,
+    "title": "Bayan-ul-Quran (Surah Al-Mursalat 01 To Surah At-Takwir 22) By Dr. Israr Ahmed | 102/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-mursalat-01-to-surah-at-takwir-22-by-dr-israr-ahmed-102-108_D5hqQSZd2zCuxOM.html",
+    "embed_url": "https://ok.ru/videoembed/3611702463112"
+  },
+  {
+    "episode": 103,
+    "title": "Bayan-ul-Quran (Surah At-Takwir 23 To Surah At-Tariq End) By Dr. Israr Ahmed | 103/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-at-takwir-23-to-surah-at-tariq-end-by-dr-israr-ahmed-103-108_2NfmXZmaA87yGeO.html",
+    "embed_url": "https://ok.ru/videoembed/3611702332040"
+  },
+  {
+    "episode": 104,
+    "title": "Bayan-ul-Quran (Surah Al-Aala 01 To Surah Al-Balad End) By Dr. Israr Ahmed | 104/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-aala-01-to-surah-al-balad-end-by-dr-israr-ahmed-104-108_3e6ZoZrWauyQXNQ.html",
+    "embed_url": "https://ok.ru/videoembed/3611702266504"
+  },
+  {
+    "episode": 105,
+    "title": "Bayan-ul-Quran (Surah Ash-Shams 01 To Surah At-Teen End) By Dr. Israr Ahmed | 105/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-ash-shams-01-to-surah-at-teen-end-by-dr-israr-ahmed-105-108_DiOivjghbN4sb8f.html",
+    "embed_url": "https://ok.ru/videoembed/3611702397576"
+  },
+  {
+    "episode": 106,
+    "title": "Bayan-ul-Quran (Surah Al-Alaq 01 To Surah Al-Kafirun End) By Dr. Israr Ahmed | 106/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-al-alaq-01-to-surah-al-kafirun-end-by-dr-israr-ahmed-106-108_mqwbKtiuU7y7CWJ.html",
+    "embed_url": "https://ok.ru/videoembed/3611702200968"
+  },
+  {
+    "episode": 107,
+    "title": "Bayan-ul-Quran (Surah An-Nasr To An-Naas) Ending Speech By Dr. Israr Ahmed | 107/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-surah-a-nasr-to-a-naas-ending-speech-by-dr-israr-ahmed-107-108_GBtikBPYfV8lhbo.html",
+    "embed_url": "https://ok.ru/videoembed/3611702659720"
+  },
+  {
+    "episode": 108,
+    "title": "Bayan-ul-Quran Ending Speech By Dr. Israr Ahmed | 108/108",
+    "link": "https://www.drisrar.com/watch/bayan-ul-quran-ending-speech-by-dr-israr-ahmed-108-108_C2iJK1V2zu2Tmaa.html",
+    "embed_url": "https://ok.ru/videoembed/3611702528648"
+  }
+];
+
+        // Surah Index Mapping
+        const SURAH_INDEX = [
+  {
+    "name": "Introduction (108 Series Overview)",
+    "parts": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "name": "Surah Al-Fatiha (Surah 1)",
+    "parts": [
+      5
+    ]
+  },
+  {
+    "name": "Surah Al-Baqarah (Surah 2)",
+    "parts": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ]
+  },
+  {
+    "name": "Surah Aal-E-Imran (Surah 3)",
+    "parts": [
+      16,
+      17,
+      18,
+      19,
+      20
+    ]
+  },
+  {
+    "name": "Surah An-Nisa (Surah 4)",
+    "parts": [
+      21,
+      22,
+      23,
+      24,
+      25,
+      26
+    ]
+  },
+  {
+    "name": "Surah Al-Ma'idah (Surah 5)",
+    "parts": [
+      27,
+      28,
+      29,
+      30,
+      31
+    ]
+  },
+  {
+    "name": "Surah Al-An'am (Surah 6)",
+    "parts": [
+      32,
+      33,
+      34,
+      35,
+      36
+    ]
+  },
+  {
+    "name": "Surah Al-A'raf (Surah 7)",
+    "parts": [
+      37,
+      38,
+      39,
+      40
+    ]
+  },
+  {
+    "name": "Surah Al-Anfal (Surah 8)",
+    "parts": [
+      41,
+      42
+    ]
+  },
+  {
+    "name": "Surah At-Tawbah (Surah 9)",
+    "parts": [
+      43,
+      44,
+      45
+    ]
+  },
+  {
+    "name": "Surah Yunus (Surah 10)",
+    "parts": [
+      45
+    ]
+  },
+  {
+    "name": "Surah Hud (Surah 11)",
+    "parts": [
+      45,
+      46
+    ]
+  },
+  {
+    "name": "Surah Yusuf (Surah 12)",
+    "parts": [
+      46,
+      47
+    ]
+  },
+  {
+    "name": "Surah Ibrahim (Surah 14)",
+    "parts": [
+      47,
+      48
+    ]
+  },
+  {
+    "name": "Surah Al-Hijr (Surah 15)",
+    "parts": [
+      48,
+      49
+    ]
+  },
+  {
+    "name": "Surah An-Nahl (Surah 16)",
+    "parts": [
+      50,
+      51
+    ]
+  },
+  {
+    "name": "Surah Bani-Israeel / Al-Isra (Surah 17)",
+    "parts": [
+      52,
+      53,
+      54
+    ]
+  },
+  {
+    "name": "Surah Al-Kahf (Surah 18)",
+    "parts": [
+      54,
+      55,
+      56
+    ]
+  },
+  {
+    "name": "Surah Maryam (Surah 19)",
+    "parts": [
+      56,
+      57
+    ]
+  },
+  {
+    "name": "Surah Taha (Surah 20)",
+    "parts": [
+      57,
+      58
+    ]
+  },
+  {
+    "name": "Surah Al-Anbiya (Surah 21)",
+    "parts": [
+      58,
+      59,
+      60
+    ]
+  },
+  {
+    "name": "Surah Al-Hajj (Surah 22)",
+    "parts": [
+      60,
+      61
+    ]
+  },
+  {
+    "name": "Surah Al-Mu'minun (Surah 23)",
+    "parts": [
+      62,
+      63
+    ]
+  },
+  {
+    "name": "Surah An-Nur (Surah 24)",
+    "parts": [
+      63,
+      64
+    ]
+  },
+  {
+    "name": "Surah Al-Furqan (Surah 25)",
+    "parts": [
+      64,
+      65
+    ]
+  },
+  {
+    "name": "Surah Ash-Shu'ara (Surah 26)",
+    "parts": [
+      65,
+      66
+    ]
+  },
+  {
+    "name": "Surah An-Naml (Surah 27)",
+    "parts": [
+      66,
+      67
+    ]
+  },
+  {
+    "name": "Surah Al-Qasas (Surah 28)",
+    "parts": [
+      67,
+      68,
+      69
+    ]
+  },
+  {
+    "name": "Surah Al-Ankabut (Surah 29)",
+    "parts": [
+      69,
+      70
+    ]
+  },
+  {
+    "name": "Surah Ar-Rum (Surah 30)",
+    "parts": [
+      70,
+      71
+    ]
+  },
+  {
+    "name": "Surah Luqman (Surah 31)",
+    "parts": [
+      71,
+      72
+    ]
+  },
+  {
+    "name": "Surah Al-Ahzab (Surah 33)",
+    "parts": [
+      72,
+      73,
+      74
+    ]
+  },
+  {
+    "name": "Surah Saba (Surah 34)",
+    "parts": [
+      74,
+      75
+    ]
+  },
+  {
+    "name": "Surah Fatir (Surah 35)",
+    "parts": [
+      75,
+      76
+    ]
+  },
+  {
+    "name": "Surah Ya-Sin / As-Saffat (Surah 36-37)",
+    "parts": [
+      76,
+      77
+    ]
+  },
+  {
+    "name": "Surah Sad / Az-Zumar (Surah 38-39)",
+    "parts": [
+      77,
+      78,
+      79,
+      80
+    ]
+  },
+  {
+    "name": "Surah Ghafir / Al-Mu'min (Surah 40)",
+    "parts": [
+      80,
+      81
+    ]
+  },
+  {
+    "name": "Surah Fussilat / Ash-Shura (Surah 41-42)",
+    "parts": [
+      81,
+      82,
+      83
+    ]
+  },
+  {
+    "name": "Surah Az-Zukhruf / Ad-Dukhan (Surah 43-44)",
+    "parts": [
+      83,
+      84
+    ]
+  },
+  {
+    "name": "Surah Al-Jathiyah / Al-Ahqaf (Surah 45-46)",
+    "parts": [
+      84,
+      85
+    ]
+  },
+  {
+    "name": "Surah Muhammad / Al-Fath (Surah 47-48)",
+    "parts": [
+      85,
+      86,
+      87
+    ]
+  },
+  {
+    "name": "Surah Al-Hujurat / Qaf (Surah 49-50)",
+    "parts": [
+      87,
+      88
+    ]
+  },
+  {
+    "name": "Surah Az-Zariyat / At-Tur / An-Najm",
+    "parts": [
+      88,
+      89,
+      90
+    ]
+  },
+  {
+    "name": "Surah Ar-Rahman / Al-Waqi'ah",
+    "parts": [
+      90,
+      91
+    ]
+  },
+  {
+    "name": "Surah Al-Hadid / Al-Mujadila",
+    "parts": [
+      92,
+      93,
+      94
+    ]
+  },
+  {
+    "name": "Surah Al-Hashr to Al-Jumu'ah",
+    "parts": [
+      94,
+      95,
+      96
+    ]
+  },
+  {
+    "name": "Surah Al-Munafiqun to At-Tahrim",
+    "parts": [
+      97,
+      98
+    ]
+  },
+  {
+    "name": "Surah Al-Mulk to Al-Muzzammil",
+    "parts": [
+      98,
+      99,
+      100
+    ]
+  },
+  {
+    "name": "Surah Al-Muddaththir to Al-Mursalat",
+    "parts": [
+      101,
+      102
+    ]
+  },
+  {
+    "name": "Juz 30 / Amma Para (Short Surahs)",
+    "parts": [
+      103,
+      104,
+      105,
+      106,
+      107,
+      108
+    ]
+  }
+];
+
+        // Application State
+        let currentIndex = 0;
+        let filteredEpisodes = [...EPISODES];
+        let watchedSet = new Set(JSON.parse(localStorage.getItem('bayan_watched') || '[]'));
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            populateSurahDropdown();
+            
+            // Check hash in URL (e.g., #ep-5)
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#ep-')) {
+                const epNum = parseInt(hash.replace('#ep-', ''), 10);
+                if (!isNaN(epNum) && epNum >= 1 && epNum <= 108) {
+                    currentIndex = epNum - 1;
+                }
+            } else {
+                // Check localStorage last played
+                const savedIndex = localStorage.getItem('bayan_last_played');
+                if (savedIndex !== null) {
+                    currentIndex = parseInt(savedIndex, 10) || 0;
+                }
+            }
+
+            renderPlaylist();
+            loadEpisode(currentIndex);
+        });
+
+        function populateSurahDropdown() {
+            const select = document.getElementById('surahSelect');
+            SURAH_INDEX.forEach(s => {
+                const opt = document.createElement('option');
+                opt.value = s.name;
+                const partStart = s.parts[0];
+                const partEnd = s.parts[s.parts.length - 1];
+                const rangeStr = partStart === partEnd ? `Part ${partStart}` : `Parts ${partStart}-${partEnd}`;
+                opt.textContent = `${s.name} (${rangeStr})`;
+                select.appendChild(opt);
+            });
+        }
+
+        function loadEpisode(index) {
+            if (index < 0 || index >= EPISODES.length) return;
+            currentIndex = index;
+
+            const ep = EPISODES[currentIndex];
+            
+            // Save state
+            localStorage.setItem('bayan_last_played', currentIndex);
+            window.location.hash = `#ep-${ep.episode}`;
+
+            // Update Iframe
+            const iframe = document.getElementById('videoIframe');
+            iframe.src = ep.embed_url;
+
+            // Update Headings & Details
+            document.getElementById('epTitle').textContent = ep.title;
+            document.getElementById('epBadge').textContent = `Episode ${ep.episode} of 108`;
+            
+            // Find Surah Name
+            const surahMatch = SURAH_INDEX.find(s => s.parts.includes(ep.episode));
+            document.getElementById('surahBadge').textContent = surahMatch ? surahMatch.name : 'Tafseer Series';
+
+            // Update Buttons
+            document.getElementById('prevBtn').disabled = (currentIndex === 0);
+            document.getElementById('nextBtn').disabled = (currentIndex === EPISODES.length - 1);
+            
+            updateWatchedButtonState();
+            highlightActivePlaylistItem();
+            renderRecommendations();
+        }
+
+        function renderRecommendations() {
+            const nextIndex = currentIndex + 1 < EPISODES.length ? currentIndex + 1 : 0;
+            const nextEp = EPISODES[nextIndex];
+
+            // Up Next Hero Card
+            document.getElementById('upNextTitle').textContent = nextEp.title;
+            document.getElementById('upNextSub').textContent = `Episode ${nextEp.episode} of 108 • Next in Sequence`;
+
+            // Find Related Surah Episodes
+            const currentEpNum = EPISODES[currentIndex].episode;
+            const currentSurah = SURAH_INDEX.find(s => s.parts.includes(currentEpNum));
+            
+            let relatedList = [];
+            if (currentSurah) {
+                // Parts of same surah except current
+                const sameSurahEpNums = currentSurah.parts.filter(p => p !== currentEpNum);
+                relatedList = EPISODES.filter(e => sameSurahEpNums.includes(e.episode));
+            }
+
+            // If less than 4 related items, add next sequential parts
+            if (relatedList.length < 4) {
+                for (let i = 1; i <= 6; i++) {
+                    const idx = (currentIndex + i) % EPISODES.length;
+                    if (!relatedList.includes(EPISODES[idx]) && idx !== currentIndex) {
+                        relatedList.push(EPISODES[idx]);
+                    }
+                    if (relatedList.length >= 4) break;
+                }
+            }
+
+            // Render Related Grid
+            const grid = document.getElementById('relatedGrid');
+            grid.innerHTML = '';
+
+            relatedList.slice(0, 4).forEach(relEp => {
+                const card = document.createElement('div');
+                card.className = 'related-card';
+                card.onclick = () => loadEpisode(relEp.episode - 1);
+
+                card.innerHTML = `
+                    <span class="related-card-ep">PART ${relEp.episode}</span>
+                    <span class="related-card-title">${relEp.title}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderPlaylist() {
+            const container = document.getElementById('playlistContainer');
+            container.innerHTML = '';
+
+            document.getElementById('playlistCounter').textContent = `${filteredEpisodes.length} Episodes`;
+
+            filteredEpisodes.forEach((ep) => {
+                const itemIdx = ep.episode - 1;
+                const isWatched = watchedSet.has(ep.episode);
+                const isActive = itemIdx === currentIndex;
+
+                const item = document.createElement('div');
+                item.className = `playlist-item ${isActive ? 'active' : ''}`;
+                item.id = `playlist-item-${itemIdx}`;
+                item.onclick = () => loadEpisode(itemIdx);
+
+                item.innerHTML = `
+                    <div class="ep-number-circle">${ep.episode}</div>
+                    <div class="item-info">
+                        <div class="item-title">${ep.title}</div>
+                        <div class="item-sub">Part ${ep.episode} ${isWatched ? '• ✓ Watched' : ''}</div>
+                    </div>
+                    ${isWatched ? '<span class="watched-indicator">✓</span>' : ''}
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function highlightActivePlaylistItem() {
+            document.querySelectorAll('.playlist-item').forEach(el => el.classList.remove('active'));
+            const activeEl = document.getElementById(`playlist-item-${currentIndex}`);
+            if (activeEl) {
+                activeEl.classList.add('active');
+                activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function playNext() {
+            if (currentIndex < EPISODES.length - 1) {
+                loadEpisode(currentIndex + 1);
+            }
+        }
+
+        function playPrevious() {
+            if (currentIndex > 0) {
+                loadEpisode(currentIndex - 1);
+            }
+        }
+
+        function playRandom() {
+            const rand = Math.floor(Math.random() * EPISODES.length);
+            loadEpisode(rand);
+        }
+
+        function resumeLastPlayed() {
+            const saved = localStorage.getItem('bayan_last_played');
+            if (saved !== null) {
+                loadEpisode(parseInt(saved, 10));
+            }
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!query) {
+                filteredEpisodes = [...EPISODES];
+            } else {
+                filteredEpisodes = EPISODES.filter(ep => 
+                    ep.title.toLowerCase().includes(query) ||
+                    ep.episode.toString() === query ||
+                    `part ${ep.episode}`.includes(query)
+                );
+            }
+            renderPlaylist();
+        }
+
+        function handleSurahSelect(surahName) {
+            if (!surahName) {
+                filteredEpisodes = [...EPISODES];
+                renderPlaylist();
+                return;
+            }
+
+            const match = SURAH_INDEX.find(s => s.name === surahName);
+            if (match) {
+                filteredEpisodes = EPISODES.filter(e => match.parts.includes(e.episode));
+                renderPlaylist();
+                // Play first episode of surah
+                if (filteredEpisodes.length > 0) {
+                    loadEpisode(filteredEpisodes[0].episode - 1);
+                }
+            }
+        }
+
+        function toggleWatchedCurrent() {
+            const epNum = EPISODES[currentIndex].episode;
+            if (watchedSet.has(epNum)) {
+                watchedSet.delete(epNum);
+            } else {
+                watchedSet.add(epNum);
+            }
+            localStorage.setItem('bayan_watched', JSON.stringify([...watchedSet]));
+            updateWatchedButtonState();
+            renderPlaylist();
+        }
+
+        function updateWatchedButtonState() {
+            const epNum = EPISODES[currentIndex].episode;
+            const watchBtn = document.getElementById('watchBtn');
+            if (watchedSet.has(epNum)) {
+                watchBtn.textContent = '✓ Completed';
+                watchBtn.className = 'btn btn-emerald';
+            } else {
+                watchBtn.textContent = 'Mark Completed';
+                watchBtn.className = 'btn btn-gold';
+            }
+        }
+
+        function openDownloadModal() {
+            document.getElementById('downloadModal').classList.add('active');
+        }
+
+        function closeDownloadModal(e) {
+            document.getElementById('downloadModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
