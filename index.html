@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bayan-ul-Quran (Dr. Israr Ahmad) - 108 Episodes Video Player</title>
-    <meta name="description" content="Complete 108-episode Bayan-ul-Quran video player by Dr. Israr Ahmad with instant search, Surah index, recommendations, and episode progress tracking.">
+    <meta name="description" content="Complete 108-episode Bayan-ul-Quran video player covering all 114 Surahs by Dr. Israr Ahmad with instant search, Surah index, recommendations, and episode progress tracking.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -50,7 +50,6 @@
             background-attachment: fixed;
         }
 
-        /* Header Navigation */
         header {
             background: rgba(13, 22, 18, 0.85);
             backdrop-filter: blur(16px);
@@ -134,7 +133,6 @@
             color: var(--accent-gold-light);
         }
 
-        /* Search & Filter Toolbar */
         .toolbar {
             background: var(--bg-card);
             border-bottom: 1px solid var(--border-color);
@@ -185,7 +183,7 @@
         }
 
         .surah-dropdown-wrapper {
-            min-width: 240px;
+            min-width: 260px;
         }
 
         .surah-dropdown {
@@ -270,7 +268,6 @@
             box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
         }
 
-        /* Main Workspace Layout */
         .main-layout {
             max-width: 1600px;
             margin: 1.5rem auto;
@@ -288,7 +285,6 @@
             }
         }
 
-        /* Left Side: Video Player & Details */
         .player-section {
             display: flex;
             flex-direction: column;
@@ -305,7 +301,7 @@
 
         .iframe-wrapper {
             position: relative;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%;
             background: #000;
         }
 
@@ -379,7 +375,6 @@
             color: var(--accent-gold-light);
         }
 
-        /* Up Next & Recommendation Section */
         .recommendations-section {
             margin-top: 0.5rem;
             display: flex;
@@ -402,7 +397,6 @@
             gap: 0.5rem;
         }
 
-        /* Up Next Hero Recommendation Card */
         .up-next-card {
             background: linear-gradient(135deg, rgba(20, 34, 28, 0.9) 0%, rgba(13, 22, 18, 0.9) 100%);
             border: 1px solid var(--border-gold);
@@ -490,7 +484,6 @@
             line-height: 1.3;
         }
 
-        /* Related Grid */
         .related-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -532,7 +525,6 @@
             line-height: 1.3;
         }
 
-        /* Right Side: Playlist Sidebar */
         .sidebar {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -674,7 +666,6 @@
             font-size: 0.9rem;
         }
 
-        /* CLI Download Modal */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -728,7 +719,6 @@
             margin: 0.75rem 0;
         }
 
-        /* Footer */
         footer {
             background: var(--bg-card);
             border-top: 1px solid var(--border-color);
@@ -747,7 +737,6 @@
 </head>
 <body>
 
-    <!-- Header Navigation -->
     <header>
         <div class="header-content">
             <div class="brand-area">
@@ -759,23 +748,22 @@
             </div>
             <div class="header-badges">
                 <span class="badge">▶ 108 HD Video Episodes</span>
-                <span class="badge badge-gold">📖 114 Surahs Mapped</span>
+                <span class="badge badge-gold">📖 All 114 Surahs Included</span>
                 <span class="badge">⚡ GitHub Pages Ready</span>
             </div>
         </div>
     </header>
 
-    <!-- Search & Filter Toolbar -->
     <section class="toolbar">
         <div class="toolbar-inner">
             <div class="search-box">
                 <span class="search-icon">🔍</span>
-                <input type="text" id="searchInput" placeholder="Search episode title, Surah name (e.g. Baqarah, Kahf, Fatiha)..." oninput="handleSearch()">
+                <input type="text" id="searchInput" placeholder="Search Surah (e.g., Fatiha, Kahf, Mulk, 114, Yasin) or episode..." oninput="handleSearch()">
             </div>
             
             <div class="surah-dropdown-wrapper">
                 <select id="surahSelect" class="surah-dropdown" onchange="handleSurahSelect(this.value)">
-                    <option value="">-- Jump to Surah / Juz --</option>
+                    <option value="">-- Select from All 114 Surahs --</option>
                 </select>
             </div>
 
@@ -787,9 +775,7 @@
         </div>
     </section>
 
-    <!-- Main Workspace Layout -->
     <main class="main-layout">
-        <!-- Left Column: Video Player & Details -->
         <div class="player-section">
             <div class="video-container">
                 <div class="iframe-wrapper">
@@ -806,7 +792,6 @@
                 </div>
             </div>
 
-            <!-- Episode Details Card -->
             <div class="ep-details-card">
                 <div class="ep-header">
                     <div>
@@ -819,13 +804,11 @@
                 </div>
             </div>
 
-            <!-- Up Next & Recommendations Engine -->
             <div class="recommendations-section">
                 <div class="section-header">
                     <h3 class="section-title">✨ Up Next & Surah Recommendations</h3>
                 </div>
 
-                <!-- Up Next Hero Card -->
                 <div id="upNextContainer" class="up-next-card" onclick="playNext()">
                     <span class="up-next-badge">NEXT VIDEO</span>
                     <div class="up-next-thumb">
@@ -838,17 +821,14 @@
                     <button class="btn btn-emerald" style="align-self: center;">Play Now ►</button>
                 </div>
 
-                <!-- Related Surah Grid -->
                 <div class="section-header" style="margin-top: 0.5rem;">
                     <h4 style="font-size: 0.92rem; color: var(--text-muted);">Related Surah Parts</h4>
                 </div>
                 <div id="relatedGrid" class="related-grid">
-                    <!-- Dynamic related cards inserted here -->
                 </div>
             </div>
         </div>
 
-        <!-- Right Column: Playlist Sidebar -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-title">
@@ -857,41 +837,38 @@
                 <span id="playlistCounter" class="ep-count">108 Episodes</span>
             </div>
             <div id="playlistContainer" class="playlist-scroll">
-                <!-- Playlist Items inserted dynamically -->
             </div>
         </aside>
     </main>
 
-    <!-- Downloader CLI Modal -->
     <div id="downloadModal" class="modal-overlay" onclick="closeDownloadModal(event)">
         <div class="modal-box" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeDownloadModal()">&times;</button>
             <h3 style="color: var(--accent-gold-light); margin-bottom: 0.5rem;">📥 Python Downloader CLI Guide</h3>
             <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
-                You can download high-definition video/audio of any Surah or episode directly using the included <code>download_bayan.py</code> script!
+                Download high-definition video/audio of any of the 114 Surahs using the included <code>download_bayan.py</code> script!
             </p>
 
-            <h4 style="font-size: 0.85rem; color: var(--text-main);">Download by Surah Name:</h4>
-            <div class="code-block">python download_bayan.py --surah Baqarah</div>
+            <h4 style="font-size: 0.85rem; color: var(--text-main);">Download by Surah Name or Number:</h4>
+            <div class="code-block">python download_bayan.py --surah Kahf</div>
+            <div class="code-block">python download_bayan.py --surah Mulk</div>
 
             <h4 style="font-size: 0.85rem; color: var(--text-main);">Download Episode Range (e.g. 1 to 10):</h4>
             <div class="code-block">python download_bayan.py --start 1 --end 10</div>
 
             <h4 style="font-size: 0.85rem; color: var(--text-main);">Download MP3 Audio Only:</h4>
-            <div class="code-block">python download_bayan.py --surah Kahf --audio-only</div>
+            <div class="code-block">python download_bayan.py --surah Fatiha --audio-only</div>
 
-            <h4 style="font-size: 0.85rem; color: var(--text-main);">List All Surah Mappings:</h4>
+            <h4 style="font-size: 0.85rem; color: var(--text-main);">List All 114 Surah Mappings:</h4>
             <div class="code-block">python download_bayan.py --list-surahs</div>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
-        <p>Bayan-ul-Quran (Dr. Israr Ahmad) Web Player & Downloader • Open Source Project</p>
+        <p>Bayan-ul-Quran (Dr. Israr Ahmad) Web Player & Downloader • Covers all 114 Surahs of the Holy Quran</p>
     </footer>
 
     <script>
-        // Full Episode Dataset
         const EPISODES = [
   {
     "episode": 1,
@@ -1542,26 +1519,17 @@
     "embed_url": "https://ok.ru/videoembed/3611702528648"
   }
 ];
-
-        // Surah Index Mapping
-        const SURAH_INDEX = [
+        const ALL_114_SURAHS = [
   {
-    "name": "Introduction (108 Series Overview)",
-    "parts": [
-      1,
-      2,
-      3,
-      4
-    ]
-  },
-  {
-    "name": "Surah Al-Fatiha (Surah 1)",
+    "number": 1,
+    "name": "Surah Al-Fatiha",
     "parts": [
       5
     ]
   },
   {
-    "name": "Surah Al-Baqarah (Surah 2)",
+    "number": 2,
+    "name": "Surah Al-Baqarah",
     "parts": [
       6,
       7,
@@ -1576,7 +1544,8 @@
     ]
   },
   {
-    "name": "Surah Aal-E-Imran (Surah 3)",
+    "number": 3,
+    "name": "Surah Aal-E-Imran",
     "parts": [
       16,
       17,
@@ -1586,7 +1555,8 @@
     ]
   },
   {
-    "name": "Surah An-Nisa (Surah 4)",
+    "number": 4,
+    "name": "Surah An-Nisa",
     "parts": [
       21,
       22,
@@ -1597,7 +1567,8 @@
     ]
   },
   {
-    "name": "Surah Al-Ma'idah (Surah 5)",
+    "number": 5,
+    "name": "Surah Al-Ma'idah",
     "parts": [
       27,
       28,
@@ -1607,7 +1578,8 @@
     ]
   },
   {
-    "name": "Surah Al-An'am (Surah 6)",
+    "number": 6,
+    "name": "Surah Al-An'am",
     "parts": [
       32,
       33,
@@ -1617,7 +1589,8 @@
     ]
   },
   {
-    "name": "Surah Al-A'raf (Surah 7)",
+    "number": 7,
+    "name": "Surah Al-A'raf",
     "parts": [
       37,
       38,
@@ -1626,14 +1599,16 @@
     ]
   },
   {
-    "name": "Surah Al-Anfal (Surah 8)",
+    "number": 8,
+    "name": "Surah Al-Anfal",
     "parts": [
       41,
       42
     ]
   },
   {
-    "name": "Surah At-Tawbah (Surah 9)",
+    "number": 9,
+    "name": "Surah At-Tawbah",
     "parts": [
       43,
       44,
@@ -1641,48 +1616,62 @@
     ]
   },
   {
-    "name": "Surah Yunus (Surah 10)",
+    "number": 10,
+    "name": "Surah Yunus",
     "parts": [
       45
     ]
   },
   {
-    "name": "Surah Hud (Surah 11)",
+    "number": 11,
+    "name": "Surah Hud",
     "parts": [
       45,
       46
     ]
   },
   {
-    "name": "Surah Yusuf (Surah 12)",
+    "number": 12,
+    "name": "Surah Yusuf",
     "parts": [
       46,
       47
     ]
   },
   {
-    "name": "Surah Ibrahim (Surah 14)",
+    "number": 13,
+    "name": "Surah Ar-Ra'd",
+    "parts": [
+      47
+    ]
+  },
+  {
+    "number": 14,
+    "name": "Surah Ibrahim",
     "parts": [
       47,
       48
     ]
   },
   {
-    "name": "Surah Al-Hijr (Surah 15)",
+    "number": 15,
+    "name": "Surah Al-Hijr",
     "parts": [
       48,
       49
     ]
   },
   {
-    "name": "Surah An-Nahl (Surah 16)",
+    "number": 16,
+    "name": "Surah An-Nahl",
     "parts": [
       50,
       51
     ]
   },
   {
-    "name": "Surah Bani-Israeel / Al-Isra (Surah 17)",
+    "number": 17,
+    "name": "Surah Al-Isra / Bani-Israeel",
     "parts": [
       52,
       53,
@@ -1690,7 +1679,8 @@
     ]
   },
   {
-    "name": "Surah Al-Kahf (Surah 18)",
+    "number": 18,
+    "name": "Surah Al-Kahf",
     "parts": [
       54,
       55,
@@ -1698,21 +1688,24 @@
     ]
   },
   {
-    "name": "Surah Maryam (Surah 19)",
+    "number": 19,
+    "name": "Surah Maryam",
     "parts": [
       56,
       57
     ]
   },
   {
-    "name": "Surah Taha (Surah 20)",
+    "number": 20,
+    "name": "Surah Taha",
     "parts": [
       57,
       58
     ]
   },
   {
-    "name": "Surah Al-Anbiya (Surah 21)",
+    "number": 21,
+    "name": "Surah Al-Anbiya",
     "parts": [
       58,
       59,
@@ -1720,49 +1713,56 @@
     ]
   },
   {
-    "name": "Surah Al-Hajj (Surah 22)",
+    "number": 22,
+    "name": "Surah Al-Hajj",
     "parts": [
       60,
       61
     ]
   },
   {
-    "name": "Surah Al-Mu'minun (Surah 23)",
+    "number": 23,
+    "name": "Surah Al-Mu'minun",
     "parts": [
       62,
       63
     ]
   },
   {
-    "name": "Surah An-Nur (Surah 24)",
+    "number": 24,
+    "name": "Surah An-Nur",
     "parts": [
       63,
       64
     ]
   },
   {
-    "name": "Surah Al-Furqan (Surah 25)",
+    "number": 25,
+    "name": "Surah Al-Furqan",
     "parts": [
       64,
       65
     ]
   },
   {
-    "name": "Surah Ash-Shu'ara (Surah 26)",
+    "number": 26,
+    "name": "Surah Ash-Shu'ara",
     "parts": [
       65,
       66
     ]
   },
   {
-    "name": "Surah An-Naml (Surah 27)",
+    "number": 27,
+    "name": "Surah An-Naml",
     "parts": [
       66,
       67
     ]
   },
   {
-    "name": "Surah Al-Qasas (Surah 28)",
+    "number": 28,
+    "name": "Surah Al-Qasas",
     "parts": [
       67,
       68,
@@ -1770,28 +1770,39 @@
     ]
   },
   {
-    "name": "Surah Al-Ankabut (Surah 29)",
+    "number": 29,
+    "name": "Surah Al-Ankabut",
     "parts": [
       69,
       70
     ]
   },
   {
-    "name": "Surah Ar-Rum (Surah 30)",
+    "number": 30,
+    "name": "Surah Ar-Rum",
     "parts": [
       70,
       71
     ]
   },
   {
-    "name": "Surah Luqman (Surah 31)",
+    "number": 31,
+    "name": "Surah Luqman",
     "parts": [
       71,
       72
     ]
   },
   {
-    "name": "Surah Al-Ahzab (Surah 33)",
+    "number": 32,
+    "name": "Surah As-Sajdah",
+    "parts": [
+      72
+    ]
+  },
+  {
+    "number": 33,
+    "name": "Surah Al-Ahzab",
     "parts": [
       72,
       73,
@@ -1799,155 +1810,588 @@
     ]
   },
   {
-    "name": "Surah Saba (Surah 34)",
+    "number": 34,
+    "name": "Surah Saba",
     "parts": [
       74,
       75
     ]
   },
   {
-    "name": "Surah Fatir (Surah 35)",
+    "number": 35,
+    "name": "Surah Fatir",
     "parts": [
       75,
       76
     ]
   },
   {
-    "name": "Surah Ya-Sin / As-Saffat (Surah 36-37)",
+    "number": 36,
+    "name": "Surah Ya-Sin",
     "parts": [
-      76,
+      76
+    ]
+  },
+  {
+    "number": 37,
+    "name": "Surah As-Saffat",
+    "parts": [
       77
     ]
   },
   {
-    "name": "Surah Sad / Az-Zumar (Surah 38-39)",
+    "number": 38,
+    "name": "Surah Sad",
     "parts": [
-      77,
+      77
+    ]
+  },
+  {
+    "number": 39,
+    "name": "Surah Az-Zumar",
+    "parts": [
       78,
       79,
       80
     ]
   },
   {
-    "name": "Surah Ghafir / Al-Mu'min (Surah 40)",
+    "number": 40,
+    "name": "Surah Ghafir / Al-Mu'min",
     "parts": [
       80,
       81
     ]
   },
   {
-    "name": "Surah Fussilat / Ash-Shura (Surah 41-42)",
+    "number": 41,
+    "name": "Surah Fussilat",
     "parts": [
-      81,
+      81
+    ]
+  },
+  {
+    "number": 42,
+    "name": "Surah Ash-Shura",
+    "parts": [
       82,
       83
     ]
   },
   {
-    "name": "Surah Az-Zukhruf / Ad-Dukhan (Surah 43-44)",
+    "number": 43,
+    "name": "Surah Az-Zukhruf",
     "parts": [
-      83,
+      83
+    ]
+  },
+  {
+    "number": 44,
+    "name": "Surah Ad-Dukhan",
+    "parts": [
       84
     ]
   },
   {
-    "name": "Surah Al-Jathiyah / Al-Ahqaf (Surah 45-46)",
+    "number": 45,
+    "name": "Surah Al-Jathiyah",
     "parts": [
-      84,
+      84
+    ]
+  },
+  {
+    "number": 46,
+    "name": "Surah Al-Ahqaf",
+    "parts": [
       85
     ]
   },
   {
-    "name": "Surah Muhammad / Al-Fath (Surah 47-48)",
+    "number": 47,
+    "name": "Surah Muhammad",
     "parts": [
-      85,
+      85
+    ]
+  },
+  {
+    "number": 48,
+    "name": "Surah Al-Fath",
+    "parts": [
       86,
       87
     ]
   },
   {
-    "name": "Surah Al-Hujurat / Qaf (Surah 49-50)",
+    "number": 49,
+    "name": "Surah Al-Hujurat",
     "parts": [
-      87,
+      87
+    ]
+  },
+  {
+    "number": 50,
+    "name": "Surah Qaf",
+    "parts": [
       88
     ]
   },
   {
-    "name": "Surah Az-Zariyat / At-Tur / An-Najm",
+    "number": 51,
+    "name": "Surah Az-Zariyat",
     "parts": [
-      88,
-      89,
+      88
+    ]
+  },
+  {
+    "number": 52,
+    "name": "Surah At-Tur",
+    "parts": [
+      89
+    ]
+  },
+  {
+    "number": 53,
+    "name": "Surah An-Najm",
+    "parts": [
       90
     ]
   },
   {
-    "name": "Surah Ar-Rahman / Al-Waqi'ah",
+    "number": 54,
+    "name": "Surah Al-Qamar",
     "parts": [
-      90,
+      90
+    ]
+  },
+  {
+    "number": 55,
+    "name": "Surah Ar-Rahman",
+    "parts": [
+      90
+    ]
+  },
+  {
+    "number": 56,
+    "name": "Surah Al-Waqi'ah",
+    "parts": [
       91
     ]
   },
   {
-    "name": "Surah Al-Hadid / Al-Mujadila",
+    "number": 57,
+    "name": "Surah Al-Hadid",
     "parts": [
-      92,
-      93,
+      92
+    ]
+  },
+  {
+    "number": 58,
+    "name": "Surah Al-Mujadila",
+    "parts": [
+      93
+    ]
+  },
+  {
+    "number": 59,
+    "name": "Surah Al-Hashr",
+    "parts": [
       94
     ]
   },
   {
-    "name": "Surah Al-Hashr to Al-Jumu'ah",
+    "number": 60,
+    "name": "Surah Al-Mumtahanah",
     "parts": [
-      94,
-      95,
+      95
+    ]
+  },
+  {
+    "number": 61,
+    "name": "Surah As-Saff",
+    "parts": [
+      95
+    ]
+  },
+  {
+    "number": 62,
+    "name": "Surah Al-Jumu'ah",
+    "parts": [
       96
     ]
   },
   {
-    "name": "Surah Al-Munafiqun to At-Tahrim",
+    "number": 63,
+    "name": "Surah Al-Munafiqun",
     "parts": [
-      97,
+      97
+    ]
+  },
+  {
+    "number": 64,
+    "name": "Surah At-Taghabun",
+    "parts": [
+      97
+    ]
+  },
+  {
+    "number": 65,
+    "name": "Surah At-Talaq",
+    "parts": [
       98
     ]
   },
   {
-    "name": "Surah Al-Mulk to Al-Muzzammil",
+    "number": 66,
+    "name": "Surah At-Tahrim",
     "parts": [
-      98,
-      99,
+      98
+    ]
+  },
+  {
+    "number": 67,
+    "name": "Surah Al-Mulk",
+    "parts": [
+      98
+    ]
+  },
+  {
+    "number": 68,
+    "name": "Surah Al-Qalam",
+    "parts": [
+      99
+    ]
+  },
+  {
+    "number": 69,
+    "name": "Surah Al-Haqqah",
+    "parts": [
+      99
+    ]
+  },
+  {
+    "number": 70,
+    "name": "Surah Al-Ma'arij",
+    "parts": [
       100
     ]
   },
   {
-    "name": "Surah Al-Muddaththir to Al-Mursalat",
+    "number": 71,
+    "name": "Surah Nuh",
     "parts": [
-      101,
+      100
+    ]
+  },
+  {
+    "number": 72,
+    "name": "Surah Al-Jinn",
+    "parts": [
+      100
+    ]
+  },
+  {
+    "number": 73,
+    "name": "Surah Al-Muzzammil",
+    "parts": [
+      100
+    ]
+  },
+  {
+    "number": 74,
+    "name": "Surah Al-Muddaththir",
+    "parts": [
+      101
+    ]
+  },
+  {
+    "number": 75,
+    "name": "Surah Al-Qiyamah",
+    "parts": [
+      101
+    ]
+  },
+  {
+    "number": 76,
+    "name": "Surah Al-Insan",
+    "parts": [
       102
     ]
   },
   {
-    "name": "Juz 30 / Amma Para (Short Surahs)",
+    "number": 77,
+    "name": "Surah Al-Mursalat",
     "parts": [
-      103,
-      104,
-      105,
-      106,
-      107,
+      102
+    ]
+  },
+  {
+    "number": 78,
+    "name": "Surah An-Naba",
+    "parts": [
+      103
+    ]
+  },
+  {
+    "number": 79,
+    "name": "Surah An-Nazi'at",
+    "parts": [
+      103
+    ]
+  },
+  {
+    "number": 80,
+    "name": "Surah 'Abasa",
+    "parts": [
+      103
+    ]
+  },
+  {
+    "number": 81,
+    "name": "Surah At-Takwir",
+    "parts": [
+      103
+    ]
+  },
+  {
+    "number": 82,
+    "name": "Surah Al-Infitar",
+    "parts": [
+      103
+    ]
+  },
+  {
+    "number": 83,
+    "name": "Surah Al-Mutaffifin",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 84,
+    "name": "Surah Al-Inshiqaq",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 85,
+    "name": "Surah Al-Buruj",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 86,
+    "name": "Surah At-Tariq",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 87,
+    "name": "Surah Al-A'la",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 88,
+    "name": "Surah Al-Ghashiyah",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 89,
+    "name": "Surah Al-Fajr",
+    "parts": [
+      104
+    ]
+  },
+  {
+    "number": 90,
+    "name": "Surah Al-Balad",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 91,
+    "name": "Surah Ash-Shams",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 92,
+    "name": "Surah Al-Layl",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 93,
+    "name": "Surah Ad-Duha",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 94,
+    "name": "Surah Ash-Sharh",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 95,
+    "name": "Surah At-Tin",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 96,
+    "name": "Surah Al-'Alaq",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 97,
+    "name": "Surah Al-Qadr",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 98,
+    "name": "Surah Al-Bayyinah",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 99,
+    "name": "Surah Az-Zalzalah",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 100,
+    "name": "Surah Al-'Adiyat",
+    "parts": [
+      105
+    ]
+  },
+  {
+    "number": 101,
+    "name": "Surah Al-Qari'ah",
+    "parts": [
+      106
+    ]
+  },
+  {
+    "number": 102,
+    "name": "Surah At-Takathur",
+    "parts": [
+      106
+    ]
+  },
+  {
+    "number": 103,
+    "name": "Surah Al-'Asr",
+    "parts": [
+      106
+    ]
+  },
+  {
+    "number": 104,
+    "name": "Surah Al-Humazah",
+    "parts": [
+      106
+    ]
+  },
+  {
+    "number": 105,
+    "name": "Surah Al-Fil",
+    "parts": [
+      107
+    ]
+  },
+  {
+    "number": 106,
+    "name": "Surah Quraysh",
+    "parts": [
+      107
+    ]
+  },
+  {
+    "number": 107,
+    "name": "Surah Al-Ma'un",
+    "parts": [
+      107
+    ]
+  },
+  {
+    "number": 108,
+    "name": "Surah Al-Kawthar",
+    "parts": [
+      107
+    ]
+  },
+  {
+    "number": 109,
+    "name": "Surah Al-Kafirun",
+    "parts": [
+      107
+    ]
+  },
+  {
+    "number": 110,
+    "name": "Surah An-Nasr",
+    "parts": [
+      107
+    ]
+  },
+  {
+    "number": 111,
+    "name": "Surah Al-Masad",
+    "parts": [
+      108
+    ]
+  },
+  {
+    "number": 112,
+    "name": "Surah Al-Ikhlas",
+    "parts": [
+      108
+    ]
+  },
+  {
+    "number": 113,
+    "name": "Surah Al-Falaq",
+    "parts": [
+      108
+    ]
+  },
+  {
+    "number": 114,
+    "name": "Surah An-Nas",
+    "parts": [
       108
     ]
   }
 ];
 
-        // Application State
         let currentIndex = 0;
         let filteredEpisodes = [...EPISODES];
         let watchedSet = new Set(JSON.parse(localStorage.getItem('bayan_watched') || '[]'));
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
             populateSurahDropdown();
             
-            // Check hash in URL (e.g., #ep-5)
             const hash = window.location.hash;
             if (hash && hash.startsWith('#ep-')) {
                 const epNum = parseInt(hash.replace('#ep-', ''), 10);
@@ -1955,7 +2399,6 @@
                     currentIndex = epNum - 1;
                 }
             } else {
-                // Check localStorage last played
                 const savedIndex = localStorage.getItem('bayan_last_played');
                 if (savedIndex !== null) {
                     currentIndex = parseInt(savedIndex, 10) || 0;
@@ -1968,13 +2411,13 @@
 
         function populateSurahDropdown() {
             const select = document.getElementById('surahSelect');
-            SURAH_INDEX.forEach(s => {
+            ALL_114_SURAHS.forEach(s => {
                 const opt = document.createElement('option');
                 opt.value = s.name;
                 const partStart = s.parts[0];
                 const partEnd = s.parts[s.parts.length - 1];
                 const rangeStr = partStart === partEnd ? `Part ${partStart}` : `Parts ${partStart}-${partEnd}`;
-                opt.textContent = `${s.name} (${rangeStr})`;
+                opt.textContent = `${s.number}. ${s.name} (${rangeStr})`;
                 select.appendChild(opt);
             });
         }
@@ -1985,23 +2428,19 @@
 
             const ep = EPISODES[currentIndex];
             
-            // Save state
             localStorage.setItem('bayan_last_played', currentIndex);
             window.location.hash = `#ep-${ep.episode}`;
 
-            // Update Iframe
             const iframe = document.getElementById('videoIframe');
             iframe.src = ep.embed_url;
 
-            // Update Headings & Details
             document.getElementById('epTitle').textContent = ep.title;
             document.getElementById('epBadge').textContent = `Episode ${ep.episode} of 108`;
             
-            // Find Surah Name
-            const surahMatch = SURAH_INDEX.find(s => s.parts.includes(ep.episode));
-            document.getElementById('surahBadge').textContent = surahMatch ? surahMatch.name : 'Tafseer Series';
+            const matchingSurahs = ALL_114_SURAHS.filter(s => s.parts.includes(ep.episode));
+            const surahNamesStr = matchingSurahs.length > 0 ? matchingSurahs.map(s => s.name).join(', ') : 'Tafseer Series';
+            document.getElementById('surahBadge').textContent = surahNamesStr;
 
-            // Update Buttons
             document.getElementById('prevBtn').disabled = (currentIndex === 0);
             document.getElementById('nextBtn').disabled = (currentIndex === EPISODES.length - 1);
             
@@ -2014,24 +2453,24 @@
             const nextIndex = currentIndex + 1 < EPISODES.length ? currentIndex + 1 : 0;
             const nextEp = EPISODES[nextIndex];
 
-            // Up Next Hero Card
             document.getElementById('upNextTitle').textContent = nextEp.title;
             document.getElementById('upNextSub').textContent = `Episode ${nextEp.episode} of 108 • Next in Sequence`;
 
-            // Find Related Surah Episodes
             const currentEpNum = EPISODES[currentIndex].episode;
-            const currentSurah = SURAH_INDEX.find(s => s.parts.includes(currentEpNum));
+            const matchingSurahs = ALL_114_SURAHS.filter(s => s.parts.includes(currentEpNum));
             
             let relatedList = [];
-            if (currentSurah) {
-                // Parts of same surah except current
-                const sameSurahEpNums = currentSurah.parts.filter(p => p !== currentEpNum);
-                relatedList = EPISODES.filter(e => sameSurahEpNums.includes(e.episode));
-            }
+            matchingSurahs.forEach(s => {
+                s.parts.forEach(p => {
+                    if (p !== currentEpNum && !relatedList.some(e => e.episode === p)) {
+                        const foundEp = EPISODES.find(e => e.episode === p);
+                        if (foundEp) relatedList.push(foundEp);
+                    }
+                });
+            });
 
-            // If less than 4 related items, add next sequential parts
             if (relatedList.length < 4) {
-                for (let i = 1; i <= 6; i++) {
+                for (let i = 1; i <= 8; i++) {
                     const idx = (currentIndex + i) % EPISODES.length;
                     if (!relatedList.includes(EPISODES[idx]) && idx !== currentIndex) {
                         relatedList.push(EPISODES[idx]);
@@ -2040,7 +2479,6 @@
                 }
             }
 
-            // Render Related Grid
             const grid = document.getElementById('relatedGrid');
             grid.innerHTML = '';
 
@@ -2123,10 +2561,18 @@
             if (!query) {
                 filteredEpisodes = [...EPISODES];
             } else {
+                // Match episode title, part number, or surah number/name in ALL_114_SURAHS
+                const matchingSurahParts = new Set();
+                ALL_114_SURAHS.forEach(s => {
+                    if (s.name.toLowerCase().includes(query) || s.number.toString() === query) {
+                        s.parts.forEach(p => matchingSurahParts.add(p));
+                    }
+                });
+
                 filteredEpisodes = EPISODES.filter(ep => 
                     ep.title.toLowerCase().includes(query) ||
                     ep.episode.toString() === query ||
-                    `part ${ep.episode}`.includes(query)
+                    matchingSurahParts.has(ep.episode)
                 );
             }
             renderPlaylist();
@@ -2139,11 +2585,10 @@
                 return;
             }
 
-            const match = SURAH_INDEX.find(s => s.name === surahName);
+            const match = ALL_114_SURAHS.find(s => s.name === surahName);
             if (match) {
                 filteredEpisodes = EPISODES.filter(e => match.parts.includes(e.episode));
                 renderPlaylist();
-                // Play first episode of surah
                 if (filteredEpisodes.length > 0) {
                     loadEpisode(filteredEpisodes[0].episode - 1);
                 }

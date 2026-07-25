@@ -2,86 +2,150 @@ import json
 import argparse
 import os
 import subprocess
-import re
 import sys
 
 # Ensure UTF-8 output encoding for Windows terminal
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
 
-SURAH_INDEX = [
-    {"name": "Introduction", "parts": [1, 2, 3, 4]},
-    {"name": "Surah Al-Fatiha (Surah 1)", "parts": [5]},
-    {"name": "Surah Al-Baqarah (Surah 2)", "parts": list(range(6, 16))},
-    {"name": "Surah Aal-E-Imran (Surah 3)", "parts": list(range(16, 21))},
-    {"name": "Surah An-Nisa (Surah 4)", "parts": list(range(21, 27))},
-    {"name": "Surah Al-Ma'idah (Surah 5)", "parts": list(range(27, 32))},
-    {"name": "Surah Al-An'am (Surah 6)", "parts": list(range(32, 37))},
-    {"name": "Surah Al-A'raf (Surah 7)", "parts": list(range(37, 41))},
-    {"name": "Surah Al-Anfal (Surah 8)", "parts": list(range(41, 43))},
-    {"name": "Surah At-Tawbah (Surah 9)", "parts": list(range(43, 46))},
-    {"name": "Surah Yunus (Surah 10)", "parts": [45]},
-    {"name": "Surah Hud (Surah 11)", "parts": [45, 46]},
-    {"name": "Surah Yusuf (Surah 12)", "parts": [46, 47]},
-    {"name": "Surah Ibrahim (Surah 14)", "parts": [47, 48]},
-    {"name": "Surah Al-Hijr (Surah 15)", "parts": [48, 49]},
-    {"name": "Surah An-Nahl (Surah 16)", "parts": [50, 51]},
-    {"name": "Surah Bani-Israeel / Al-Isra (Surah 17)", "parts": [52, 53, 54]},
-    {"name": "Surah Al-Kahf (Surah 18)", "parts": [54, 55, 56]},
-    {"name": "Surah Maryam (Surah 19)", "parts": [56, 57]},
-    {"name": "Surah Taha (Surah 20)", "parts": [57, 58]},
-    {"name": "Surah Al-Anbiya (Surah 21)", "parts": [58, 59, 60]},
-    {"name": "Surah Al-Hajj (Surah 22)", "parts": [60, 61]},
-    {"name": "Surah Al-Mu'minun (Surah 23)", "parts": [62, 63]},
-    {"name": "Surah An-Nur (Surah 24)", "parts": [63, 64]},
-    {"name": "Surah Al-Furqan (Surah 25)", "parts": [64, 65]},
-    {"name": "Surah Ash-Shu'ara (Surah 26)", "parts": [65, 66]},
-    {"name": "Surah An-Naml (Surah 27)", "parts": [66, 67]},
-    {"name": "Surah Al-Qasas (Surah 28)", "parts": [67, 68, 69]},
-    {"name": "Surah Al-Ankabut (Surah 29)", "parts": [69, 70]},
-    {"name": "Surah Ar-Rum (Surah 30)", "parts": [70, 71]},
-    {"name": "Surah Luqman (Surah 31)", "parts": [71, 72]},
-    {"name": "Surah Al-Ahzab (Surah 33)", "parts": [72, 73, 74]},
-    {"name": "Surah Saba (Surah 34)", "parts": [74, 75]},
-    {"name": "Surah Fatir (Surah 35)", "parts": [75, 76]},
-    {"name": "Surah Ya-Sin / As-Saffat (Surah 36-37)", "parts": [76, 77]},
-    {"name": "Surah Sad / Az-Zumar (Surah 38-39)", "parts": [77, 78, 79, 80]},
-    {"name": "Surah Ghafir / Al-Mu'min (Surah 40)", "parts": [80, 81]},
-    {"name": "Surah Fussilat / Ash-Shura (Surah 41-42)", "parts": [81, 82, 83]},
-    {"name": "Surah Az-Zukhruf / Ad-Dukhan (Surah 43-44)", "parts": [83, 84]},
-    {"name": "Surah Al-Jathiyah / Al-Ahqaf (Surah 45-46)", "parts": [84, 85]},
-    {"name": "Surah Muhammad / Al-Fath (Surah 47-48)", "parts": [85, 86, 87]},
-    {"name": "Surah Al-Hujurat / Qaf (Surah 49-50)", "parts": [87, 88]},
-    {"name": "Surah Az-Zariyat / At-Tur / An-Najm", "parts": [88, 89, 90]},
-    {"name": "Surah Ar-Rahman / Al-Waqi'ah", "parts": [90, 91]},
-    {"name": "Surah Al-Hadid / Al-Mujadila", "parts": [92, 93, 94]},
-    {"name": "Surah Al-Hashr to Al-Jumu'ah", "parts": [94, 95, 96]},
-    {"name": "Surah Al-Munafiqun to At-Tahrim", "parts": [97, 98]},
-    {"name": "Surah Al-Mulk to Al-Muzzammil", "parts": [98, 99, 100]},
-    {"name": "Surah Al-Muddaththir to Al-Mursalat", "parts": [101, 102]},
-    {"name": "Juz 30 / Amma Para (Short Surahs)", "parts": list(range(103, 109))},
+# Complete List of all 114 Surahs of the Holy Quran
+ALL_114_SURAHS = [
+    {"number": 1, "name": "Surah Al-Fatiha", "parts": [5]},
+    {"number": 2, "name": "Surah Al-Baqarah", "parts": list(range(6, 16))},
+    {"number": 3, "name": "Surah Aal-E-Imran", "parts": list(range(16, 21))},
+    {"number": 4, "name": "Surah An-Nisa", "parts": list(range(21, 27))},
+    {"number": 5, "name": "Surah Al-Ma'idah", "parts": list(range(27, 32))},
+    {"number": 6, "name": "Surah Al-An'am", "parts": list(range(32, 37))},
+    {"number": 7, "name": "Surah Al-A'raf", "parts": list(range(37, 41))},
+    {"number": 8, "name": "Surah Al-Anfal", "parts": list(range(41, 43))},
+    {"number": 9, "name": "Surah At-Tawbah", "parts": [43, 44, 45]},
+    {"number": 10, "name": "Surah Yunus", "parts": [45]},
+    {"number": 11, "name": "Surah Hud", "parts": [45, 46]},
+    {"number": 12, "name": "Surah Yusuf", "parts": [46, 47]},
+    {"number": 13, "name": "Surah Ar-Ra'd", "parts": [47]},
+    {"number": 14, "name": "Surah Ibrahim", "parts": [47, 48]},
+    {"number": 15, "name": "Surah Al-Hijr", "parts": [48, 49]},
+    {"number": 16, "name": "Surah An-Nahl", "parts": [50, 51]},
+    {"number": 17, "name": "Surah Al-Isra / Bani-Israeel", "parts": [52, 53, 54]},
+    {"number": 18, "name": "Surah Al-Kahf", "parts": [54, 55, 56]},
+    {"number": 19, "name": "Surah Maryam", "parts": [56, 57]},
+    {"number": 20, "name": "Surah Taha", "parts": [57, 58]},
+    {"number": 21, "name": "Surah Al-Anbiya", "parts": [58, 59, 60]},
+    {"number": 22, "name": "Surah Al-Hajj", "parts": [60, 61]},
+    {"number": 23, "name": "Surah Al-Mu'minun", "parts": [62, 63]},
+    {"number": 24, "name": "Surah An-Nur", "parts": [63, 64]},
+    {"number": 25, "name": "Surah Al-Furqan", "parts": [64, 65]},
+    {"number": 26, "name": "Surah Ash-Shu'ara", "parts": [65, 66]},
+    {"number": 27, "name": "Surah An-Naml", "parts": [66, 67]},
+    {"number": 28, "name": "Surah Al-Qasas", "parts": [67, 68, 69]},
+    {"number": 29, "name": "Surah Al-Ankabut", "parts": [69, 70]},
+    {"number": 30, "name": "Surah Ar-Rum", "parts": [70, 71]},
+    {"number": 31, "name": "Surah Luqman", "parts": [71, 72]},
+    {"number": 32, "name": "Surah As-Sajdah", "parts": [72]},
+    {"number": 33, "name": "Surah Al-Ahzab", "parts": [72, 73, 74]},
+    {"number": 34, "name": "Surah Saba", "parts": [74, 75]},
+    {"number": 35, "name": "Surah Fatir", "parts": [75, 76]},
+    {"number": 36, "name": "Surah Ya-Sin", "parts": [76]},
+    {"number": 37, "name": "Surah As-Saffat", "parts": [77]},
+    {"number": 38, "name": "Surah Sad", "parts": [77]},
+    {"number": 39, "name": "Surah Az-Zumar", "parts": [78, 79, 80]},
+    {"number": 40, "name": "Surah Ghafir / Al-Mu'min", "parts": [80, 81]},
+    {"number": 41, "name": "Surah Fussilat", "parts": [81]},
+    {"number": 42, "name": "Surah Ash-Shura", "parts": [82, 83]},
+    {"number": 43, "name": "Surah Az-Zukhruf", "parts": [83]},
+    {"number": 44, "name": "Surah Ad-Dukhan", "parts": [84]},
+    {"number": 45, "name": "Surah Al-Jathiyah", "parts": [84]},
+    {"number": 46, "name": "Surah Al-Ahqaf", "parts": [85]},
+    {"number": 47, "name": "Surah Muhammad", "parts": [85]},
+    {"number": 48, "name": "Surah Al-Fath", "parts": [86, 87]},
+    {"number": 49, "name": "Surah Al-Hujurat", "parts": [87]},
+    {"number": 50, "name": "Surah Qaf", "parts": [88]},
+    {"number": 51, "name": "Surah Az-Zariyat", "parts": [88]},
+    {"number": 52, "name": "Surah At-Tur", "parts": [89]},
+    {"number": 53, "name": "Surah An-Najm", "parts": [90]},
+    {"number": 54, "name": "Surah Al-Qamar", "parts": [90]},
+    {"number": 55, "name": "Surah Ar-Rahman", "parts": [90]},
+    {"number": 56, "name": "Surah Al-Waqi'ah", "parts": [91]},
+    {"number": 57, "name": "Surah Al-Hadid", "parts": [92]},
+    {"number": 58, "name": "Surah Al-Mujadila", "parts": [93]},
+    {"number": 59, "name": "Surah Al-Hashr", "parts": [94]},
+    {"number": 60, "name": "Surah Al-Mumtahanah", "parts": [95]},
+    {"number": 61, "name": "Surah As-Saff", "parts": [95]},
+    {"number": 62, "name": "Surah Al-Jumu'ah", "parts": [96]},
+    {"number": 63, "name": "Surah Al-Munafiqun", "parts": [97]},
+    {"number": 64, "name": "Surah At-Taghabun", "parts": [97]},
+    {"number": 65, "name": "Surah At-Talaq", "parts": [98]},
+    {"number": 66, "name": "Surah At-Tahrim", "parts": [98]},
+    {"number": 67, "name": "Surah Al-Mulk", "parts": [98]},
+    {"number": 68, "name": "Surah Al-Qalam", "parts": [99]},
+    {"number": 69, "name": "Surah Al-Haqqah", "parts": [99]},
+    {"number": 70, "name": "Surah Al-Ma'arij", "parts": [100]},
+    {"number": 71, "name": "Surah Nuh", "parts": [100]},
+    {"number": 72, "name": "Surah Al-Jinn", "parts": [100]},
+    {"number": 73, "name": "Surah Al-Muzzammil", "parts": [100]},
+    {"number": 74, "name": "Surah Al-Muddaththir", "parts": [101]},
+    {"number": 75, "name": "Surah Al-Qiyamah", "parts": [101]},
+    {"number": 76, "name": "Surah Al-Insan", "parts": [102]},
+    {"number": 77, "name": "Surah Al-Mursalat", "parts": [102]},
+    {"number": 78, "name": "Surah An-Naba", "parts": [103]},
+    {"number": 79, "name": "Surah An-Nazi'at", "parts": [103]},
+    {"number": 80, "name": "Surah 'Abasa", "parts": [103]},
+    {"number": 81, "name": "Surah At-Takwir", "parts": [103]},
+    {"number": 82, "name": "Surah Al-Infitar", "parts": [103]},
+    {"number": 83, "name": "Surah Al-Mutaffifin", "parts": [104]},
+    {"number": 84, "name": "Surah Al-Inshiqaq", "parts": [104]},
+    {"number": 85, "name": "Surah Al-Buruj", "parts": [104]},
+    {"number": 86, "name": "Surah At-Tariq", "parts": [104]},
+    {"number": 87, "name": "Surah Al-A'la", "parts": [104]},
+    {"number": 88, "name": "Surah Al-Ghashiyah", "parts": [104]},
+    {"number": 89, "name": "Surah Al-Fajr", "parts": [104]},
+    {"number": 90, "name": "Surah Al-Balad", "parts": [105]},
+    {"number": 91, "name": "Surah Ash-Shams", "parts": [105]},
+    {"number": 92, "name": "Surah Al-Layl", "parts": [105]},
+    {"number": 93, "name": "Surah Ad-Duha", "parts": [105]},
+    {"number": 94, "name": "Surah Ash-Sharh", "parts": [105]},
+    {"number": 95, "name": "Surah At-Tin", "parts": [105]},
+    {"number": 96, "name": "Surah Al-'Alaq", "parts": [105]},
+    {"number": 97, "name": "Surah Al-Qadr", "parts": [105]},
+    {"number": 98, "name": "Surah Al-Bayyinah", "parts": [105]},
+    {"number": 99, "name": "Surah Az-Zalzalah", "parts": [105]},
+    {"number": 100, "name": "Surah Al-'Adiyat", "parts": [105]},
+    {"number": 101, "name": "Surah Al-Qari'ah", "parts": [106]},
+    {"number": 102, "name": "Surah At-Takathur", "parts": [106]},
+    {"number": 103, "name": "Surah Al-'Asr", "parts": [106]},
+    {"number": 104, "name": "Surah Al-Humazah", "parts": [106]},
+    {"number": 105, "name": "Surah Al-Fil", "parts": [107]},
+    {"number": 106, "name": "Surah Quraysh", "parts": [107]},
+    {"number": 107, "name": "Surah Al-Ma'un", "parts": [107]},
+    {"number": 108, "name": "Surah Al-Kawthar", "parts": [107]},
+    {"number": 109, "name": "Surah Al-Kafirun", "parts": [107]},
+    {"number": 110, "name": "Surah An-Nasr", "parts": [107]},
+    {"number": 111, "name": "Surah Al-Masad", "parts": [108]},
+    {"number": 112, "name": "Surah Al-Ikhlas", "parts": [108]},
+    {"number": 113, "name": "Surah Al-Falaq", "parts": [108]},
+    {"number": 114, "name": "Surah An-Nas", "parts": [108]},
 ]
 
 def main():
-    parser = argparse.ArgumentParser(description="Download Bayan-ul-Quran Series (Dr. Israr Ahmad) - Surah-Wise or Episode-Wise")
-    parser.add_argument("--surah", type=str, help="Name or keyword of Surah (e.g. Baqarah, Fatiha, Kahf, Yasin, 2)")
+    parser = argparse.ArgumentParser(description="Download Bayan-ul-Quran Series (Dr. Israr Ahmad) - All 114 Surahs Mapped")
+    parser.add_argument("--surah", type=str, help="Name or number of Surah (e.g. Baqarah, Fatiha, Kahf, Mulk, 114)")
     parser.add_argument("--start", type=int, help="Start episode number (1-108)")
     parser.add_argument("--end", type=int, help="End episode number (1-108)")
     parser.add_argument("--all", action="store_true", help="Download all 108 episodes")
     parser.add_argument("--output-dir", type=str, default="Bayan_ul_Quran_Downloads", help="Directory to save downloads")
     parser.add_argument("--audio-only", action="store_true", help="Download MP3 audio only")
-    parser.add_argument("--list-surahs", action="store_true", help="List all Surahs and their part numbers")
+    parser.add_argument("--list-surahs", action="store_true", help="List all 114 Surahs and their part numbers")
 
     args = parser.parse_args()
 
     if args.list_surahs:
-        print("\n=== BAYAN-UL-QURAN SURAH INDEX ===")
-        for s in SURAH_INDEX:
+        print("\n=== BAYAN-UL-QURAN: ALL 114 SURAHS INDEX ===")
+        for s in ALL_114_SURAHS:
             parts_str = ", ".join(f"Part {p}" for p in s["parts"])
-            print(f" • {s['name']:<42} -> {parts_str}")
+            print(f" {s['number']:>3}. {s['name']:<38} -> {parts_str}")
         return
 
-    json_file = "bayan_ul_quran_episodes_full.json"
+    json_file = "episodes.json"
     if not os.path.exists(json_file):
         print(f"Error: {json_file} not found.")
         return
@@ -94,8 +158,8 @@ def main():
     if args.surah:
         query = args.surah.lower().strip()
         matched_surahs = []
-        for s in SURAH_INDEX:
-            if query in s["name"].lower():
+        for s in ALL_114_SURAHS:
+            if query in s["name"].lower() or query == str(s["number"]):
                 matched_surahs.append(s)
                 target_parts.update(s["parts"])
         
@@ -107,12 +171,12 @@ def main():
         if matched_surahs:
             print(f"\n[+] Found Surah match for '{args.surah}':")
             for ms in matched_surahs:
-                print(f"   • {ms['name']} -> Parts {ms['parts']}")
+                print(f"   • Surah {ms['number']}. {ms['name']} -> Parts {ms['parts']}")
         elif target_parts:
             print(f"\n[+] Found title matches for '{args.surah}': Parts {sorted(target_parts)}")
         else:
             print(f"[-] No Surah or episode found matching '{args.surah}'.")
-            print("Run with --list-surahs to see all available Surahs.")
+            print("Run with --list-surahs to see all 114 available Surahs.")
             return
 
     elif args.start or args.end:
@@ -124,10 +188,10 @@ def main():
     else:
         print("💡 Usage examples:")
         print("   python download_bayan.py --surah Baqarah        (Download Surah Al-Baqarah Parts 6 to 15)")
-        print("   python download_bayan.py --surah Fatiha         (Download Surah Al-Fatiha Part 5)")
-        print("   python download_bayan.py --surah Kahf           (Download Surah Al-Kahf Parts 54 to 56)")
-        print("   python download_bayan.py --start 6 --end 15     (Download Parts 6 to 15)")
-        print("   python download_bayan.py --list-surahs          (Show full Surah index)")
+        print("   python download_bayan.py --surah 114            (Download Surah An-Nas Part 108)")
+        print("   python download_bayan.py --surah Mulk           (Download Surah Al-Mulk Part 98)")
+        print("   python download_bayan.py --start 1 --end 10     (Download Parts 1 to 10)")
+        print("   python download_bayan.py --list-surahs          (Show all 114 Surahs index)")
         return
 
     selected_episodes = [ep for ep in episodes if ep["episode"] in target_parts]
@@ -137,7 +201,6 @@ def main():
 
     os.makedirs(args.output_dir, exist_ok=True)
 
-    # Check if yt-dlp is available
     try:
         subprocess.run(["yt-dlp", "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         has_ytdlp = True
