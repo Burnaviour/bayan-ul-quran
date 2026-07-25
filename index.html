@@ -3,11 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bayan-ul-Quran (Dr. Israr Ahmad) - 108 Episodes Video Player</title>
-    <meta name="description" content="Complete 108-episode Bayan-ul-Quran video player covering all 114 Surahs by Dr. Israr Ahmad with instant search, Surah index, recommendations, and episode progress tracking.">
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>Bayan-ul-Quran (Dr. Israr Ahmad) - Complete 108 Episodes Video Player</title>
+    <meta name="title" content="Bayan-ul-Quran (Dr. Israr Ahmad) - Complete 108 Episodes Video Player">
+    <meta name="description" content="Watch and download the complete 108-episode Bayan-ul-Quran video Tafseer series by Dr. Israr Ahmad covering all 114 Surahs of the Holy Quran. Official reference link to drisrar.com included.">
+    <meta name="keywords" content="Bayan ul Quran, Dr Israr Ahmad, Quran Tafseer, Dr Israr Ahmad Bayan ul Quran, 108 Episodes, 114 Surahs, Tanzeem-e-Islami, Quran Video Player, Quran Downloader, drisrar.com, Quran Translation Urdu, Urdu Tafseer, Quran Lectures">
+    <meta name="author" content="Dr. Israr Ahmad (Tanzeem-e-Islami)">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook / WhatsApp SEO Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://burnaviour.github.io/bayan-ul-quran/">
+    <meta property="og:title" content="Bayan-ul-Quran (Dr. Israr Ahmad) - 108 Episodes Video Player">
+    <meta property="og:description" content="Complete 108-episode Bayan-ul-Quran video player covering all 114 Surahs by Dr. Israr Ahmad with instant search, recommendations, and Python downloader CLI.">
+    <meta property="og:site_name" content="Bayan-ul-Quran Web App">
+
+    <!-- Twitter Card SEO Tags -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://burnaviour.github.io/bayan-ul-quran/">
+    <meta property="twitter:title" content="Bayan-ul-Quran (Dr. Israr Ahmad) - 108 Episodes Video Player">
+    <meta property="twitter:description" content="Watch & Download Bayan-ul-Quran by Dr. Israr Ahmad. Instant search across all 114 Surahs with next video recommendations.">
+
+    <!-- Schema.org JSON-LD Structured Data for Google Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Bayan-ul-Quran (Dr. Israr Ahmad)",
+      "url": "https://burnaviour.github.io/bayan-ul-quran/",
+      "description": "Complete 108-episode Bayan-ul-Quran video player by Dr. Israr Ahmad covering all 114 Surahs with instant search and Python downloader CLI.",
+      "author": {
+        "@type": "Person",
+        "name": "Dr. Israr Ahmad",
+        "url": "https://www.drisrar.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Tanzeem-e-Islami",
+        "url": "https://www.drisrar.com"
+      }
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --bg-primary: #060a08;
@@ -125,12 +167,25 @@
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            text-decoration: none;
         }
 
         .badge-gold {
             background: rgba(245, 158, 11, 0.1);
             border-color: var(--border-gold);
             color: var(--accent-gold-light);
+        }
+
+        .badge-official {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(16, 185, 129, 0.2) 100%);
+            border-color: var(--accent-gold);
+            color: #ffffff;
+            transition: var(--transition);
+        }
+
+        .badge-official:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
         }
 
         .toolbar {
@@ -731,7 +786,7 @@
 
         footer a {
             color: var(--accent-gold-light);
-            text-decoration: none;
+            text-decoration: underline;
         }
     </style>
 </head>
@@ -749,7 +804,7 @@
             <div class="header-badges">
                 <span class="badge">▶ 108 HD Video Episodes</span>
                 <span class="badge badge-gold">📖 All 114 Surahs Included</span>
-                <span class="badge">⚡ GitHub Pages Ready</span>
+                <a href="https://www.drisrar.com" target="_blank" rel="noopener noreferrer" class="badge badge-official">🌐 Official Site: drisrar.com ↗</a>
             </div>
         </div>
     </header>
@@ -866,6 +921,9 @@
 
     <footer>
         <p>Bayan-ul-Quran (Dr. Israr Ahmad) Web Player & Downloader • Covers all 114 Surahs of the Holy Quran</p>
+        <p style="margin-top: 0.4rem; font-size: 0.8rem; color: var(--text-dim);">
+            Official Reference & Source Portal: <a href="https://www.drisrar.com" target="_blank" rel="noopener noreferrer">drisrar.com (Tanzeem-e-Islami)</a>
+        </p>
     </footer>
 
     <script>
@@ -2561,7 +2619,6 @@
             if (!query) {
                 filteredEpisodes = [...EPISODES];
             } else {
-                // Match episode title, part number, or surah number/name in ALL_114_SURAHS
                 const matchingSurahParts = new Set();
                 ALL_114_SURAHS.forEach(s => {
                     if (s.name.toLowerCase().includes(query) || s.number.toString() === query) {
